@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "filmId": 1,
+        "personId": 1,
+        "role": "actor"
+    },
+    {
+        "id": 2,
+        "filmId": 2,
+        "personId": 1,
+        "role": "actor"
+    },
+    {
+        "id": 3,
+        "filmId": 1,
+        "personId": 2,
+        "role": "actor"
+    },
+    {
+        "id": 4,
+        "filmId": 2,
+        "personId": 2,
+        "role": "actor"
+    }
+]

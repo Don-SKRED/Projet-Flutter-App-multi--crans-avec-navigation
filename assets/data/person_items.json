@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "name": "abdelaziz",
+        "birthday": "1999-12-12",
+        "gender": true,
+        "face": "face1"
+    },
+    {
+        "id": 2,
+        "name": "Ben Affleck",
+        "birthday": "1972-08-30",
+        "gender": true,
+        "face": "face2"
+    },
+    {
+        "id": 3,
+        "name": "Marlon Brando",
+        "birthday": "1924-07-03",
+        "gender": true,
+        "face": "face3"
+    },
+    {
+        "id": 4,
+        "name": "Morgan Freeman",
+        "birthday": "1937-06-01",
+        "gender": true,
+        "face": "face4"
+    },
+    {
+        "id": 5,
+        "name": "Jack Nicholson",
+        "birthday": "1937-04-22",
+        "gender": true,
+        "face": "face5"
+    }
+]

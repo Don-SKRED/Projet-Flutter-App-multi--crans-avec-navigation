@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "title": "Inception",
+        "release": 2010,
+        "genre": "Science-Fiction",
+        "synopsis": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
+        "poster": "inception_poster.jpg"
+    },
+    {
+        "id": 2,
+        "title": "The Matrix",
+        "release": 1999,
+        "genre": "Science-Fiction",
+        "synopsis": "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
+        "poster": "matrix_poster.jpg"
+    },
+    {
+        "id": 3,
+        "title": "The Dark Knight",
+        "release": 2008,
+        "genre": "Action",
+        "synopsis": "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
+        "poster": "the_dark_knight_poster.jpg"
+    },
+    {
+        "id": 4,
+        "title": "Pulp Fiction",
+        "release": 1994,
+        "genre": "Crime",
+        "synopsis": "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
+        "poster": "pulp_fiction_poster.jpg"
+    },
+    {
+        "id": 5,
+        "title": "The Lord of the Rings: The Return of the King",
+        "release": 2003,
+        "genre": "Fantasy",
+        "synopsis": "Gandalf and Aragorn lead the World of Men against Sauron's army to draw his gaze from Frodo and Sam as they approach Mount Doom with the One Ring.",
+        "poster": "lotr_return_poster.jpg"
+    }
+]
