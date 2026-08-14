@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_screen_app_with_navigation/features/film/application/services/film_service.dart';
 import 'package:multi_screen_app_with_navigation/features/film/domain/film_model.dart';
@@ -133,8 +132,7 @@ class _FilmFormState extends State<FilmForm> {
                           genre: genreValue!,
                           poster: posterValue ?? "default_poster.jpg",
                         );
-                        filmService.add(film);
-                        print(film);
+                        await filmService.add(film);
                         print("film ajoutée");
                         if (mounted) context.pop();
                       }

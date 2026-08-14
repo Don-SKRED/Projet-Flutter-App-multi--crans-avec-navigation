@@ -35,14 +35,25 @@ class _SpecificPersonState extends State<SpecificPerson> {
                 child: FutureBuilder(
                   future: creditsService.findByPersonId(widget.personId),
                   builder: (context, asyncSnapshot) {
+                    if (asyncSnapshot.hasError) {
+                      return Center(
+                        child: Text('Erreur1 : ${asyncSnapshot.error}'),
+                      );
+                    }
                     if (asyncSnapshot.hasData) {
                       var data = asyncSnapshot.data;
                       return ListView.builder(
+                        scrollDirection: Axis.horizontal,
                         itemCount: data!.length,
                         itemBuilder: (context, index) {
                           return FutureBuilder(
                             future: filmService.findById(data[index].filmId),
                             builder: (context, snaphsot) {
+                              if (snaphsot.hasError) {
+                                return Center(
+                                  child: Text('Erreur2 : ${snaphsot.error}'),
+                                );
+                              }
                               if (snaphsot.hasData) {
                                 var filmData = snaphsot.data;
                                 return CardFilmWidget(film: filmData!);

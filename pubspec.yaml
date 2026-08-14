@@ -65,6 +65,7 @@ flutter:
     - assets/data/credits_items.json
     - assets/data/person_items.json
     - assets/data/film_items.json
+    - assets/data/theme_mode.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

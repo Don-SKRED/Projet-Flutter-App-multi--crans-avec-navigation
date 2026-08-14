@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:multi_screen_app_with_navigation/features/film/domain/film_model.dart';
 import 'package:multi_screen_app_with_navigation/shared/services/repository.dart';
-import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 // ---------------------------------------------------------------------------
 // Faux repository testable (sans Flutter, sans rootBundle)
@@ -42,31 +40,31 @@ class FakeFilmRepository extends Repository<Film> {
 // Données de test
 // ---------------------------------------------------------------------------
 List<Film> get testFilms => [
-      const Film(
-        1,
-        title: 'Inception',
-        release: 2010,
-        synopsis: 'Dream heist',
-        genre: 'Sci-Fi',
-        poster: 'inception.jpg',
-      ),
-      const Film(
-        2,
-        title: 'The Dark Knight',
-        release: 2008,
-        synopsis: 'Batman vs Joker',
-        genre: 'Action',
-        poster: 'dark_knight.jpg',
-      ),
-      const Film(
-        3,
-        title: 'Interstellar',
-        release: 2014,
-        synopsis: 'Space travel through wormhole',
-        genre: 'Sci-Fi',
-        poster: 'interstellar.jpg',
-      ),
-    ];
+  const Film(
+    1,
+    title: 'Inception',
+    release: 2010,
+    synopsis: 'Dream heist',
+    genre: 'Sci-Fi',
+    poster: 'inception.jpg',
+  ),
+  const Film(
+    2,
+    title: 'The Dark Knight',
+    release: 2008,
+    synopsis: 'Batman vs Joker',
+    genre: 'Action',
+    poster: 'dark_knight.jpg',
+  ),
+  const Film(
+    3,
+    title: 'Interstellar',
+    release: 2014,
+    synopsis: 'Space travel through wormhole',
+    genre: 'Sci-Fi',
+    poster: 'interstellar.jpg',
+  ),
+];
 
 String encodeFilms(List<Film> films) =>
     jsonEncode(films.map((f) => f.toJson()).toList());

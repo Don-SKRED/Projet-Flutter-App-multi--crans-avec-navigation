@@ -3,14 +3,14 @@ enum RoleCredit { realisateur, acteur, actrice, scenariste }
 class Credits {
   final int _id;
   final int filmId;
-  final int personneId;
+  final int personId;
   final RoleCredit role;
   final String? personnage; // nom du personnage, si acteur/actrice
 
   const Credits(
     this._id, {
     required this.filmId,
-    required this.personneId,
+    required this.personId,
     required this.role,
     this.personnage,
   });
@@ -18,7 +18,7 @@ class Credits {
   factory Credits.fromJson(Map<String, dynamic> json) => Credits(
     json['id'],
     filmId: json['filmId'],
-    personneId: json['personneId'],
+    personId: json['personId'],
     role: RoleCredit.values.byName(json['role']),
     personnage: json['personnage'],
   );
@@ -26,7 +26,7 @@ class Credits {
   Map<String, dynamic> toJson() => {
     'id': id,
     'filmId': filmId,
-    'personneId': personneId,
+    'personId': personId,
     'role': role.name,
     'personnage': personnage,
   };

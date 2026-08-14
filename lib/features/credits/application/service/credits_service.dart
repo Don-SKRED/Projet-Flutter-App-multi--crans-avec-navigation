@@ -1,7 +1,5 @@
 import 'package:multi_screen_app_with_navigation/features/credits/domain/credits_model.dart';
-import 'package:multi_screen_app_with_navigation/features/film/application/services/film_service.dart';
-import 'package:multi_screen_app_with_navigation/features/film/domain/film_model.dart';
-import 'package:multi_screen_app_with_navigation/features/person/application/service/person_service.dart';
+
 import 'package:multi_screen_app_with_navigation/shared/services/repository.dart';
 
 class CreditsService extends Repository<Credits> {
@@ -21,11 +19,9 @@ class CreditsService extends Repository<Credits> {
 
   Future<List<Credits>> findByPersonId(int personId) async {
     List<Credits> listCredits = await readFile();
-    print(
-      listCredits.where((credits) => credits.personneId == personId).toList(),
-    );
+
     return listCredits
-        .where((credits) => credits.personneId == personId)
+        .where((credits) => credits.personId == personId)
         .toList();
   }
 
