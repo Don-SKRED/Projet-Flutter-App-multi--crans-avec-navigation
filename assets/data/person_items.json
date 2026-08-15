@@ -1,22 +1,22 @@
 [
     {
         "id": 1,
-        "name": "abdelaziz",
-        "birthday": "1999-12-12",
+        "name": "Heath Ledger",
+        "birthday": "1979-04-04",
         "gender": true,
         "face": "face1"
     },
     {
         "id": 2,
-        "name": "Ben Affleck",
-        "birthday": "1972-08-30",
+        "name": "Michael Caine",
+        "birthday": "1933-03-14",
         "gender": true,
         "face": "face2"
     },
     {
         "id": 3,
-        "name": "Marlon Brando",
-        "birthday": "1924-07-03",
+        "name": "Christian Bale",
+        "birthday": "1974-01-30",
         "gender": true,
         "face": "face3"
     },
@@ -29,8 +29,106 @@
     },
     {
         "id": 5,
-        "name": "Jack Nicholson",
-        "birthday": "1937-04-22",
+        "name": "Elijah Wood",
+        "birthday": "1981-01-28",
+        "gender": true,
+        "face": "face5"
+    },
+    {
+        "id": 6,
+        "name": "Viggo Morstensen",
+        "birthday": "1958-10-20",
+        "gender": true,
+        "face": "face5"
+    },
+    {
+        "id": 7,
+        "name": "Ian McKellen",
+        "birthday": "1939-05-25",
+        "gender": true,
+        "face": "face5"
+    },
+    {
+        "id": 8,
+        "name": "Peter Jackson",
+        "birthday": "1961-10-31",
+        "gender": true,
+        "face": "face5"
+    },
+    {
+        "id": 9,
+        "name": "Christopher Nolan",
+        "birthday": "1961-10-31",
+        "gender": true,
+        "face": "face5"
+    },
+    {
+        "id": 10,
+        "name": "John Travolta",
+        "birthday": "1954-02-18",
+        "gender": true,
+        "face": "face5"
+    },
+    {
+        "id": 11,
+        "name": "Bruce Willis",
+        "birthday": "1955-03-19",
+        "gender": true,
+        "face": "face5"
+    },
+    {
+        "id": 12,
+        "name": "Quentin Tarantino",
+        "birthday": "1963-03-27",
+        "gender": true,
+        "face": "face5"
+    },
+    {
+        "id": 13,
+        "name": "Leonardo DiCaprio",
+        "birthday": "1974-11-11",
+        "gender": true,
+        "face": "face5"
+    },
+    {
+        "id": 14,
+        "name": "Tom Hardy",
+        "birthday": "1977-09-15",
+        "gender": true,
+        "face": "face5"
+    },
+    {
+        "id": 12,
+        "name": "Keanu Reeves",
+        "birthday": "1964-09-02",
+        "gender": true,
+        "face": "face5"
+    },
+    {
+        "id": 13,
+        "name": "Carrie-Anne Moss",
+        "birthday": "1967-08-21",
+        "gender": true,
+        "face": "face5"
+    },
+    {
+        "id": 14,
+        "name": "Laurence Fishburne",
+        "birthday": "1961-07-30",
+        "gender": true,
+        "face": "face5"
+    },
+    {
+        "id": 15,
+        "name": "Lana Wachowski",
+        "birthday": "1965-06-21",
+        "gender": true,
+        "face": "face5"
+    },
+    {
+        "id": 16,
+        "name": "Lilly Wachowski",
+        "birthday": "1967-12-10",
         "gender": true,
         "face": "face5"
     }

@@ -133,8 +133,7 @@ class _FilmFormState extends State<FilmForm> {
                           poster: posterValue ?? "default_poster.jpg",
                         );
                         await filmService.add(film);
-                        print("film ajoutée");
-                        if (mounted) context.pop();
+                        if (context.mounted) context.pop();
                       }
                     },
                     child: Text("Ajouter"),

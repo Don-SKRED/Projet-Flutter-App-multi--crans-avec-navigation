@@ -158,7 +158,7 @@ class _HomepageState extends State<Homepage> {
                         return InkWell(
                           onTap: () => context.push(
                             "person/${data[index].id}",
-                            // extra: personService,
+                            extra: personService,
                           ),
                           child: CardPersonWidget(person: data[index]),
                         );

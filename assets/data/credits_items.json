@@ -1,26 +1,128 @@
 [
     {
         "id": 1,
-        "filmId": 1,
+        "filmId": 3,
         "personId": 1,
         "role": "acteur"
     },
     {
         "id": 2,
-        "filmId": 2,
-        "personId": 1,
-        "role": "realisateur"
+        "filmId": 3,
+        "personId": 2,
+        "role": "acteur"
     },
     {
         "id": 3,
-        "filmId": 1,
-        "personId": 2,
-        "role": "actrice"
+        "filmId": 3,
+        "personId": 3,
+        "role": "acteur"
     },
     {
-        "id": 4,
+        "id": 5,
         "filmId": 2,
-        "personId": 2,
+        "personId": 12,
         "role": "acteur"
+    },
+    {
+        "id": 6,
+        "filmId": 2,
+        "personId": 13,
+        "role": "acteur"
+    },
+    {
+        "id": 7,
+        "filmId": 2,
+        "personId": 14,
+        "role": "acteur"
+    },
+    {
+        "id": 8,
+        "filmId": 2,
+        "personId": 16,
+        "role": "realisateur"
+    },
+    {
+        "id": 9,
+        "filmId": 2,
+        "personId": 15,
+        "role": "realisateur"
+    },
+    {
+        "id": 10,
+        "filmId": 4,
+        "personId": 4,
+        "role": "acteur"
+    },
+    {
+        "id": 11,
+        "filmId": 4,
+        "personId": 10,
+        "role": "acteur"
+    },
+    {
+        "id": 12,
+        "filmId": 4,
+        "personId": 11,
+        "role": "acteur"
+    },
+    {
+        "id": 13,
+        "filmId": 4,
+        "personId": 12,
+        "role": "acteur"
+    },
+    {
+        "id": 14,
+        "filmId": 1,
+        "personId": 13,
+        "role": "acteur"
+    },
+    {
+        "id": 15,
+        "filmId": 1,
+        "personId": 14,
+        "role": "acteur"
+    },
+    {
+        "id": 16,
+        "filmId": 5,
+        "personId": 5,
+        "role": "acteur"
+    },
+    {
+        "id": 17,
+        "filmId": 5,
+        "personId": 6,
+        "role": "acteur"
+    },
+    {
+        "id": 17,
+        "filmId": 5,
+        "personId": 7,
+        "role": "acteur"
+    },
+    {
+        "id": 18,
+        "filmId": 5,
+        "personId": 8,
+        "role": "realisateur"
+    },
+    {
+        "id": 19,
+        "filmId": 1,
+        "personId": 9,
+        "role": "realisateur"
+    },
+    {
+        "id": 20,
+        "filmId": 3,
+        "personId": 9,
+        "role": "realisateur"
+    },
+    {
+        "id": 20,
+        "filmId": 4,
+        "personId": 12,
+        "role": "realisateur"
     }
 ]
