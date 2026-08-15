@@ -1,16 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 
-class ThemeProvider {
-  ThemeMode _themeMode = ThemeMode.system;
-  ThemeMode get themeMode => _themeMode;
-
-  bool get isDarkMode => _themeMode == ThemeMode.dark;
-
+class PreferenceService {
   Future<File> getLocalfile() async {
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/theme_mode.json');
@@ -34,16 +28,12 @@ class ThemeProvider {
     final file = await initFile();
     String jsonString = await file.readAsString();
     Map<dynamic, dynamic> value = jsonDecode(jsonString);
-    _themeMode = value["dark_mode"] as bool ? ThemeMode.dark : ThemeMode.light;
     return value["dark_mode"];
   }
 
-  Future changeMode() async {
-    // _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
-    var actualMode = await readFile();
+  Future save(bool value) async {
     final file = await getLocalfile();
-
-    file.writeAsString(actualMode.toString());
-    _themeMode = !actualMode ? ThemeMode.dark : ThemeMode.light;
+    final json = jsonEncode({"dark_mode": value});
+    await file.writeAsString(json);
   }
 }

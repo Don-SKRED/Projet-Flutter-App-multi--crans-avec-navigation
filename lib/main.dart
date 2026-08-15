@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:multi_screen_app_with_navigation/routing/routes.dart';
-import 'package:multi_screen_app_with_navigation/shared/services/theme_provider.dart';
+import 'package:multi_screen_app_with_navigation/shared/utils/theme_provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await themeProvider.currentMode(); // chargement AVANT le premier affichage
+
   runApp(const MyApp());
 }
 
@@ -19,22 +22,29 @@ class MyApp extends StatelessWidget {
     //   ),
     //   home: const MyHomePage(title: 'Flutter Demo Home Page'),
     // );
-    return MaterialApp.router(
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.deepPurple,
-        brightness: Brightness.light,
-      ),
+    return ListenableBuilder(
+      listenable: themeProvider,
+      builder: (context, child) {
+        return MaterialApp.router(
+          theme: ThemeData(
+            useMaterial3: true,
+            colorSchemeSeed: Colors.deepPurple,
+            brightness: Brightness.light,
+          ),
 
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.deepPurple,
-        brightness: Brightness.dark,
-      ),
-      themeMode: ThemeProvider().themeMode, // lequel des deux utiliser
+          darkTheme: ThemeData(
+            useMaterial3: true,
+            colorSchemeSeed: Colors.deepPurple,
+            brightness: Brightness.dark,
+          ),
+          themeMode: themeProvider.isDarkMode
+              ? ThemeMode.dark
+              : ThemeMode.light, // lequel des deux utiliser
 
-      routerConfig: appRouter,
-      title: 'Flutter Demo',
+          routerConfig: appRouter,
+          title: 'Flutter Demo',
+        );
+      },
     );
   }
 }

@@ -7,7 +7,7 @@ import 'package:multi_screen_app_with_navigation/features/film/presentation/widg
 import 'package:multi_screen_app_with_navigation/features/person/application/service/person_service.dart';
 import 'package:multi_screen_app_with_navigation/features/person/domain/person_model.dart';
 import 'package:multi_screen_app_with_navigation/features/person/presentation/widgets/card_person_widget.dart';
-import 'package:multi_screen_app_with_navigation/shared/services/theme_provider.dart';
+import 'package:multi_screen_app_with_navigation/shared/utils/theme_provider.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -27,15 +27,13 @@ class _HomepageState extends State<Homepage> {
   late Future<List<Person>> _personsFuture;
   List<Film> listFilm = [];
   List<Person> listPerson = [];
-  ThemeProvider themeProvider = ThemeProvider();
+
   @override
   void initState() {
     super.initState();
     _filmsFuture = filmService.readFile();
     _personsFuture = personService.readFile();
     _loadData();
-
-    ThemeProvider().readFile();
   }
 
   @override
@@ -71,7 +69,20 @@ class _HomepageState extends State<Homepage> {
       appBar: AppBar(
         title: Text(titleAppBar),
         actions: [
-          IconButton(onPressed: null, icon: Icon(Icons.dark_mode)),
+          ListenableBuilder(
+            listenable: themeProvider, // l'objet entier, pas un champ précis
+            builder: (context, child) {
+              // Ici, PAS de "value" fourni automatiquement — on relit nous-mêmes :
+              return IconButton(
+                onPressed: () {
+                  themeProvider.changeMode(!themeProvider.isDarkMode);
+                },
+                icon: Icon(
+                  themeProvider.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                ),
+              );
+            },
+          ),
           IconButton(
             onPressed: () {
               showSearch(
