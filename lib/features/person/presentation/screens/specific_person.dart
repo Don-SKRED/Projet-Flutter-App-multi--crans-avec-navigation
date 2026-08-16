@@ -119,7 +119,7 @@ class _SpecificPersonState extends State<SpecificPerson> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text("${personData!.birthday}"),
+                                              Text(personData.birthday),
                                               Text(
                                                 personData.gender
                                                     ? "Homme"
