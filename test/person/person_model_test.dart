@@ -8,8 +8,7 @@ void main() {
   final Map<String, dynamic> referenceJson = {
     'id': 1,
     'name': 'Marlon Brando',
-    'birthday':
-        1924, // Passé comme int car fromJson fait DateTime(json['birthday'])
+    'birthday': '1924',
     'gender': true,
     'face': 'brando.jpg',
   };
@@ -17,7 +16,6 @@ void main() {
   final Person referencePerson = Person(
     1,
     name: 'Marlon Brando',
-    // birthday: DateTime(1924),
     birthday: "1924",
     gender: true,
     face: 'brando.jpg',
@@ -29,7 +27,7 @@ void main() {
 
       expect(person.id, equals(1));
       expect(person.name, equals('Marlon Brando'));
-      expect(person.birthday, equals(DateTime(1924)));
+      expect(person.birthday, equals('1924'));
       expect(person.gender, isTrue);
       expect(person.face, equals('brando.jpg'));
     });
@@ -52,7 +50,7 @@ void main() {
 
       expect(json['id'], equals(1));
       expect(json['name'], equals('Marlon Brando'));
-      expect(json['birthday'], equals(DateTime(1924)));
+      expect(json['birthday'], equals('1924'));
       expect(json['gender'], isTrue);
       expect(json['face'], equals('brando.jpg'));
     });

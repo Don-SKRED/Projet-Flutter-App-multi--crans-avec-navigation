@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multi_screen_app_with_navigation/features/person/domain/person_model.dart';
-import 'package:multi_screen_app_with_navigation/shared/screens/homepage.dart';
+import 'package:multi_screen_app_with_navigation/features/person/presentation/widgets/search_card_person.dart';
 
 class ResultSearchPerson extends StatefulWidget {
   final String query;

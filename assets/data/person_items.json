@@ -4,132 +4,132 @@
         "name": "Heath Ledger",
         "birthday": "1979-04-04",
         "gender": true,
-        "face": "face1"
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/Heath_Ledger.jpg"
     },
     {
         "id": 2,
         "name": "Michael Caine",
         "birthday": "1933-03-14",
-        "gender": true,
-        "face": "face2"
+        "gender": false,
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/Michael_Caine.jpg"
     },
     {
         "id": 3,
         "name": "Christian Bale",
         "birthday": "1974-01-30",
         "gender": true,
-        "face": "face3"
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/christian_bale.jpg"
     },
     {
         "id": 4,
         "name": "Morgan Freeman",
         "birthday": "1937-06-01",
         "gender": true,
-        "face": "face4"
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/morgan_freeman.jpg"
     },
     {
         "id": 5,
         "name": "Elijah Wood",
         "birthday": "1981-01-28",
         "gender": true,
-        "face": "face5"
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/Elijah_Wood.jpg"
     },
     {
         "id": 6,
         "name": "Viggo Morstensen",
         "birthday": "1958-10-20",
         "gender": true,
-        "face": "face5"
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/Viggo_Mortensen.jpg"
     },
     {
         "id": 7,
         "name": "Ian McKellen",
         "birthday": "1939-05-25",
         "gender": true,
-        "face": "face5"
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/Ian_McKellen.jpg"
     },
     {
         "id": 8,
         "name": "Peter Jackson",
         "birthday": "1961-10-31",
         "gender": true,
-        "face": "face5"
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/peterjackson.jpg"
     },
     {
         "id": 9,
         "name": "Christopher Nolan",
         "birthday": "1961-10-31",
         "gender": true,
-        "face": "face5"
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/christopher_nolan.jpg"
     },
     {
         "id": 10,
         "name": "John Travolta",
         "birthday": "1954-02-18",
         "gender": true,
-        "face": "face5"
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/John_Travolta.jpg"
     },
     {
         "id": 11,
         "name": "Bruce Willis",
         "birthday": "1955-03-19",
         "gender": true,
-        "face": "face5"
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/bruce_willis.jpg"
     },
     {
         "id": 12,
         "name": "Quentin Tarantino",
         "birthday": "1963-03-27",
         "gender": true,
-        "face": "face5"
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/Quentin_Tarantino.jpg"
     },
     {
         "id": 13,
         "name": "Leonardo DiCaprio",
         "birthday": "1974-11-11",
         "gender": true,
-        "face": "face5"
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/leonardo_dicaprio.jpg"
     },
     {
         "id": 14,
         "name": "Tom Hardy",
         "birthday": "1977-09-15",
         "gender": true,
-        "face": "face5"
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/Tom_hardy.jpg"
     },
     {
-        "id": 12,
+        "id": 17,
         "name": "Keanu Reeves",
         "birthday": "1964-09-02",
         "gender": true,
-        "face": "face5"
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/Keanu_Reeves.jpg"
     },
     {
-        "id": 13,
+        "id": 18,
         "name": "Carrie-Anne Moss",
         "birthday": "1967-08-21",
-        "gender": true,
-        "face": "face5"
+        "gender": false,
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/Carrie_Anne_Moss.jpg"
     },
     {
-        "id": 14,
+        "id": 19,
         "name": "Laurence Fishburne",
         "birthday": "1961-07-30",
-        "gender": true,
-        "face": "face5"
+        "gender": false,
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/Laurence_Fishburne.jpg"
     },
     {
         "id": 15,
         "name": "Lana Wachowski",
         "birthday": "1965-06-21",
-        "gender": true,
-        "face": "face5"
+        "gender": false,
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/Lana_Wachowski.jpg"
     },
     {
         "id": 16,
         "name": "Lilly Wachowski",
         "birthday": "1967-12-10",
-        "gender": true,
-        "face": "face5"
+        "gender": false,
+        "face": "https://raw.githubusercontent.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation/main/images_hosted/personnes/Lilly_Wachowski.jpg"
     }
 ]

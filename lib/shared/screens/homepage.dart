@@ -4,10 +4,14 @@ import 'package:multi_screen_app_with_navigation/features/film/application/servi
 import 'package:multi_screen_app_with_navigation/features/film/domain/film_model.dart';
 
 import 'package:multi_screen_app_with_navigation/features/film/presentation/widget/card_film_widget.dart';
+import 'package:multi_screen_app_with_navigation/features/film/presentation/widget/search_card_film.dart';
 import 'package:multi_screen_app_with_navigation/features/person/application/service/person_service.dart';
 import 'package:multi_screen_app_with_navigation/features/person/domain/person_model.dart';
 import 'package:multi_screen_app_with_navigation/features/person/presentation/widgets/card_person_widget.dart';
+import 'package:multi_screen_app_with_navigation/features/person/presentation/widgets/search_card_person.dart';
 import 'package:multi_screen_app_with_navigation/shared/utils/theme_provider.dart';
+import 'package:multi_screen_app_with_navigation/shared/widgets/search_result_section.dart';
+import 'package:multi_screen_app_with_navigation/shared/utils/responsive.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -109,8 +113,8 @@ class _HomepageState extends State<Homepage> {
               ),
             ),
             Container(
-              decoration: BoxDecoration(color: Colors.deepPurple),
-              height: 400,
+              decoration: const BoxDecoration(color: Colors.deepPurple),
+              height: context.filmsListHeight,
               child: FutureBuilder(
                 future: _filmsFuture,
                 builder: (context, asyncSnapshot) {
@@ -128,8 +132,8 @@ class _HomepageState extends State<Homepage> {
                         );
                       },
                       separatorBuilder: (context, index) =>
-                          const SizedBox(width: 50),
-                      itemCount: 4,
+                          SizedBox(width: context.spacing),
+                      itemCount: data.length,
                     );
                   } else {
                     return CircularProgressIndicator();
@@ -151,7 +155,7 @@ class _HomepageState extends State<Homepage> {
                 if (asyncSnapshot.hasData) {
                   final data = asyncSnapshot.data!;
                   return SizedBox(
-                    height: 100,
+                    height: context.personListHeight,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
@@ -164,7 +168,7 @@ class _HomepageState extends State<Homepage> {
                         );
                       },
                       separatorBuilder: (context, index) =>
-                          const SizedBox(width: 50),
+                          SizedBox(width: context.spacing),
                       itemCount: data.length,
                     ),
                   );
@@ -237,116 +241,25 @@ class MySearchDelegate extends SearchDelegate {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (resultsFilm.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(left: 30.0, bottom: 5),
-              child: Text(
-                "Film(${resultsFilm.length})",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 9.0, bottom: 25),
-            child: (resultsFilm.isNotEmpty)
-                ? Container(
-                    // height: 400,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          // height: 300,
-                          child: ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: (resultsFilm.length > 4)
-                                ? 4
-                                : resultsFilm.length,
-                            itemBuilder: (context, index) {
-                              final film = resultsFilm[index];
-                              return CardFilm(film: film);
-                            },
-                          ),
-                        ),
-                        (resultsFilm.length > 4)
-                            ? Divider()
-                            : SizedBox.shrink(),
-                        (resultsFilm.length > 4)
-                            ? TextButton(
-                                onPressed: () {
-                                  context.go(
-                                    "search/film?q=$query",
-                                    extra: resultsFilm,
-                                  );
-                                },
-                                child: Text("Tout afficher"),
-                              )
-                            : SizedBox.shrink(),
-                      ],
-                    ),
-                  )
-                : SizedBox(),
+          SearchResultSection<Film>(
+            titre: "Film",
+            items: resultsFilm,
+            itemBuilder: (context, film) => CardFilm(film: film),
+            onVoirTout: () =>
+                context.go("search/film?q=$query", extra: resultsFilm),
           ),
-          if (resultsPerson.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(left: 30.0, bottom: 5),
-              child: Text(
-                "Pesonnalité(${resultsPerson.length})",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 9.0),
-            child: (resultsPerson.isNotEmpty)
-                ? Container(
-                    // height: 300,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          // height: 220,
-                          child: ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: (resultsPerson.length > 4)
-                                ? 4
-                                : resultsPerson.length,
-                            itemBuilder: (context, index) {
-                              final person = resultsPerson[index];
-                              return CardPerson(person: person);
-                            },
-                          ),
-                        ),
-                        (resultsPerson.length > 4)
-                            ? Divider()
-                            : SizedBox.shrink(),
-                        (resultsPerson.length > 4)
-                            ? TextButton(
-                                onPressed: () {
-                                  context.push(
-                                    "search/person?q=$query",
-                                    extra: resultsPerson,
-                                  );
-                                },
-                                child: Text("Tout afficher"),
-                              )
-                            : SizedBox(),
-                      ],
-                    ),
-                  )
-                : SizedBox.shrink(),
+          SearchResultSection<Person>(
+            titre: "Pesonnalité",
+            items: resultsPerson,
+            itemBuilder: (context, person) => CardPerson(person: person),
+            onVoirTout: () =>
+                context.push("search/person?q=$query", extra: resultsPerson),
           ),
         ],
       ),
     );
   }
 
-  // Filtre et affiche les suggestions en temps réel pendant la saisie
   @override
   Widget buildSuggestions(BuildContext context) {
     final suggestionsFilm = listFilm
@@ -372,149 +285,22 @@ class MySearchDelegate extends SearchDelegate {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (suggestionsFilm.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(left: 30.0, bottom: 5),
-              child: Text(
-                "Film(${suggestionsFilm.length})",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 9.0, bottom: 25),
-            child: (suggestionsFilm.isNotEmpty)
-                ? Container(
-                    // height: 400,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          // height: 300,
-                          child: ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: (suggestionsFilm.length > 4)
-                                ? 4
-                                : suggestionsFilm.length,
-                            itemBuilder: (context, index) {
-                              final film = suggestionsFilm[index];
-                              return CardFilm(film: film);
-                            },
-                          ),
-                        ),
-                        (suggestionsFilm.length > 4)
-                            ? Divider()
-                            : SizedBox.shrink(),
-                        (suggestionsFilm.length > 4)
-                            ? TextButton(
-                                onPressed: () {
-                                  context.push(
-                                    "search/film?q=$query",
-                                    extra: suggestionsFilm,
-                                  );
-                                },
-                                child: Text("Tout afficher"),
-                              )
-                            : SizedBox.shrink(),
-                      ],
-                    ),
-                  )
-                : SizedBox(),
+          SearchResultSection<Film>(
+            titre: "Film",
+            items: suggestionsFilm,
+            itemBuilder: (context, film) => CardFilm(film: film),
+            onVoirTout: () =>
+                context.push("search/film?q=$query", extra: suggestionsFilm),
           ),
-          if (suggestionPerson.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(left: 30.0, bottom: 5),
-              child: Text(
-                "Pesonnalité(${suggestionPerson.length})",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 9.0),
-            child: (suggestionPerson.isNotEmpty)
-                ? Container(
-                    // height: 300,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          // height: 220,
-                          child: ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: (suggestionPerson.length > 4)
-                                ? 4
-                                : suggestionPerson.length,
-                            itemBuilder: (context, index) {
-                              final person = suggestionPerson[index];
-                              return CardPerson(person: person);
-                            },
-                          ),
-                        ),
-                        (suggestionPerson.length > 4)
-                            ? Divider()
-                            : SizedBox.shrink(),
-                        (suggestionPerson.length > 4)
-                            ? TextButton(
-                                onPressed: () {
-                                  context.go(
-                                    "search/person?q=$query",
-                                    extra: suggestionPerson,
-                                  );
-                                },
-                                child: Text("Tout afficher"),
-                              )
-                            : SizedBox(),
-                      ],
-                    ),
-                  )
-                : SizedBox.shrink(),
+          SearchResultSection<Person>(
+            titre: "Pesonnalité",
+            items: suggestionPerson,
+            itemBuilder: (context, person) => CardPerson(person: person),
+            onVoirTout: () =>
+                context.go("search/person?q=$query", extra: suggestionPerson),
           ),
         ],
       ),
-    );
-  }
-}
-
-class CardFilm extends StatelessWidget {
-  final Film film;
-  const CardFilm({super.key, required this.film});
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: const Icon(
-        Icons.movie,
-      ), // Remplace le Placeholder par une icône plus propre
-      title: Text(film.title),
-      subtitle: Text(film.genre),
-      onTap: () {
-        // Redirige vers la page de détails du film cliqué
-        context.push("film/${film.id}");
-      },
-    );
-  }
-}
-
-class CardPerson extends StatelessWidget {
-  final Person person;
-  const CardPerson({super.key, required this.person});
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: const Icon(
-        Icons.person,
-      ), // Remplace le Placeholder par une icône plus propre
-      title: Text(person.name),
-      onTap: () {
-        // Redirige vers la page de détails du film cliqué
-        context.push("person/${person.id}");
-      },
     );
   }
 }

@@ -2,7 +2,7 @@ class Person {
   final int _id;
   final String name;
   final String birthday;
-  final bool gender; //0 pour  homme et 1 pour femme
+  final bool gender; //1 pour  homme et 0 pour femme
   final String face;
 
   Person(
