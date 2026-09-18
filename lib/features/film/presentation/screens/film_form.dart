@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:multi_screen_app_with_navigation/shared/utils/responsive.dart';
+import 'package:multi_screen_app_with_navigation/core/utils/responsive.dart';
 import 'package:multi_screen_app_with_navigation/features/film/application/services/film_service.dart';
 import 'package:multi_screen_app_with_navigation/features/film/domain/film_model.dart';
 

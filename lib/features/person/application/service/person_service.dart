@@ -1,5 +1,5 @@
 import 'package:multi_screen_app_with_navigation/features/person/domain/person_model.dart';
-import 'package:multi_screen_app_with_navigation/shared/services/repository.dart';
+import 'package:multi_screen_app_with_navigation/core/services/repository.dart';
 
 class PersonService extends Repository<Person> {
   @override

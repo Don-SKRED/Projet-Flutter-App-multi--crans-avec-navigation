@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:multi_screen_app_with_navigation/shared/services/preference_service.dart';
+import 'package:multi_screen_app_with_navigation/core/services/preference_service.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeProvider({PreferenceService? preferenceService})

@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import 'package:multi_screen_app_with_navigation/features/auth/presentation/screens/login_screen.dart';
+import 'package:multi_screen_app_with_navigation/features/auth/presentation/screens/signup_screen.dart';
 import 'package:multi_screen_app_with_navigation/features/film/application/services/film_service.dart';
 import 'package:multi_screen_app_with_navigation/features/film/domain/film_model.dart';
 import 'package:multi_screen_app_with_navigation/features/film/presentation/screens/film_form.dart';
@@ -6,13 +8,19 @@ import 'package:multi_screen_app_with_navigation/features/person/application/ser
 import 'package:multi_screen_app_with_navigation/features/person/domain/person_model.dart';
 import 'package:multi_screen_app_with_navigation/features/person/presentation/screens/specific_person.dart';
 import 'package:multi_screen_app_with_navigation/features/film/presentation/screens/specific_film_page.dart';
-import 'package:multi_screen_app_with_navigation/shared/screens/homepage.dart';
-import 'package:multi_screen_app_with_navigation/shared/screens/result_search_film.dart';
-import 'package:multi_screen_app_with_navigation/shared/screens/result_search_person.dart';
+import 'package:multi_screen_app_with_navigation/core/screens/homepage.dart';
+import 'package:multi_screen_app_with_navigation/core/screens/result_search_film.dart';
+import 'package:multi_screen_app_with_navigation/core/screens/result_search_person.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
+  redirect: (context, state) {
+    return null;
+  },
+
   routes: [
+    GoRoute(path: "/login", builder: (context, state) => const LoginScreen()),
+    GoRoute(path: "/signup", builder: (context, state) => const SignupScreen()),
     GoRoute(path: "/", builder: (context, state) => const Homepage()),
     GoRoute(
       path: "/film/new",

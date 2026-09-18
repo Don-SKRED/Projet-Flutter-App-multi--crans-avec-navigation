@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:multi_screen_app_with_navigation/main.dart';
 import 'package:multi_screen_app_with_navigation/features/film/domain/film_model.dart';
 import 'package:multi_screen_app_with_navigation/features/film/presentation/widget/card_film_widget.dart';
-import 'package:multi_screen_app_with_navigation/shared/widgets/search_result_section.dart';
+import 'package:multi_screen_app_with_navigation/core/widgets/search_result_section.dart';
 
 void main() {
   // Configurer le mock pour path_provider

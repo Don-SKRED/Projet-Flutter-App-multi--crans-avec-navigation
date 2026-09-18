@@ -4,7 +4,7 @@ import 'package:multi_screen_app_with_navigation/features/credits/application/se
 import 'package:multi_screen_app_with_navigation/features/film/application/services/film_service.dart';
 import 'package:multi_screen_app_with_navigation/features/film/presentation/widget/card_film_widget.dart';
 import 'package:multi_screen_app_with_navigation/features/person/application/service/person_service.dart';
-import 'package:multi_screen_app_with_navigation/shared/utils/responsive.dart';
+import 'package:multi_screen_app_with_navigation/core/utils/responsive.dart';
 
 class SpecificPerson extends StatefulWidget {
   final int personId;

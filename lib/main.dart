@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:multi_screen_app_with_navigation/routing/routes.dart';
-import 'package:multi_screen_app_with_navigation/shared/utils/theme_provider.dart';
+import 'package:multi_screen_app_with_navigation/core/utils/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await themeProvider.currentMode(); // chargement AVANT le premier affichage
-
-  runApp(const MyApp());
+  await dotenv.load(fileName: ".env");
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

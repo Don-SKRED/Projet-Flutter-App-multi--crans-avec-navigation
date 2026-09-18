@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:multi_screen_app_with_navigation/features/film/application/services/film_service.dart';
 import 'package:multi_screen_app_with_navigation/features/film/domain/film_model.dart';
 import 'package:multi_screen_app_with_navigation/features/credits/application/service/credits_service.dart';
-import 'package:multi_screen_app_with_navigation/shared/services/preference_service.dart';
+import 'package:multi_screen_app_with_navigation/core/services/preference_service.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

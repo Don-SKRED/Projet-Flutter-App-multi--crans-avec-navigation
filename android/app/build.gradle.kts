@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.multi_screen_app_with_navigation"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

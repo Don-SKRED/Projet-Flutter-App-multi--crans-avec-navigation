@@ -35,7 +35,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:multi_screen_app_with_navigation/features/person/domain/person_model.dart';
-import 'package:multi_screen_app_with_navigation/shared/utils/responsive.dart';
+import 'package:multi_screen_app_with_navigation/core/utils/responsive.dart';
 
 class CardPersonWidget extends StatelessWidget {
   final Person person;

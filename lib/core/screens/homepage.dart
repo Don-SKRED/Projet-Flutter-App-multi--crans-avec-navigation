@@ -9,9 +9,9 @@ import 'package:multi_screen_app_with_navigation/features/person/application/ser
 import 'package:multi_screen_app_with_navigation/features/person/domain/person_model.dart';
 import 'package:multi_screen_app_with_navigation/features/person/presentation/widgets/card_person_widget.dart';
 import 'package:multi_screen_app_with_navigation/features/person/presentation/widgets/search_card_person.dart';
-import 'package:multi_screen_app_with_navigation/shared/utils/theme_provider.dart';
-import 'package:multi_screen_app_with_navigation/shared/widgets/search_result_section.dart';
-import 'package:multi_screen_app_with_navigation/shared/utils/responsive.dart';
+import 'package:multi_screen_app_with_navigation/core/utils/theme_provider.dart';
+import 'package:multi_screen_app_with_navigation/core/widgets/search_result_section.dart';
+import 'package:multi_screen_app_with_navigation/core/utils/responsive.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
