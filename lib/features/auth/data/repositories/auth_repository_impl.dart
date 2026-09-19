@@ -5,7 +5,7 @@ import 'package:multi_screen_app_with_navigation/features/auth/domain/repositori
 
 class AuthRepositoryImpl extends AuthRepository {
   final RemoteAuthDataSource remoteAuthDataSource;
-  final SecureStorageService secureStorage; // ← ajouté
+  final SecureStorageService secureStorage;
 
   AuthRepositoryImpl(this.remoteAuthDataSource, this.secureStorage);
 
@@ -14,7 +14,8 @@ class AuthRepositoryImpl extends AuthRepository {
     final response = await remoteAuthDataSource.login(email, password);
     await secureStorage.saveTokens(
       accessToken: response.accessToken,
-    ); // ← sauvegarde ici
+      refreshToken: response.refreshToken, // ← bug corrigé, manquait avant
+    );
     return response;
   }
 
@@ -39,6 +40,34 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<void> logout() async {
     await remoteAuthDataSource.logout();
-    await secureStorage.clear(); // ← nettoyage à la déconnexion
+    await secureStorage.clear();
+  }
+
+  @override
+  Future<AuthResponseModel?> restoreSession() async {
+    final accessToken = await secureStorage.accessToken;
+    if (accessToken == null) return null; // aucune session locale
+
+    try {
+      // getCurrentUser() passe par le Dio configuré avec l'intercepteur :
+      // si l'access_token est expiré, le refresh automatique de DioClient
+      // se déclenche tout seul AVANT que cette méthode ne reçoive une
+      // erreur — donc ce chemin fonctionne même après expiration, tant
+      // que le refresh_token est encore valide.
+      final user = await remoteAuthDataSource.getCurrentUser();
+      final refreshToken = await secureStorage.refreshToken;
+
+      return AuthResponseModel(
+        accessToken: accessToken,
+        refreshToken: refreshToken ?? '',
+        expiresIn: 3600,
+        user: user,
+      );
+    } catch (_) {
+      // access_token ET refresh_token invalides/expirés : vraie
+      // session expirée, on nettoie pour repartir sur une base saine.
+      await secureStorage.clear();
+      return null;
+    }
   }
 }

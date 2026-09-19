@@ -25,16 +25,20 @@ final remoteAuthDataSourceProvider = Provider<RemoteAuthDataSource>((ref) {
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final remoteAuthDataSource = ref.watch(remoteAuthDataSourceProvider);
-  final secureStorage = ref.watch(
-    secureStorageProvider,
-  ); // ← déjà déclaré plus haut dans ton fichier
+  final secureStorage = ref.watch(secureStorageProvider);
   return AuthRepositoryImpl(remoteAuthDataSource, secureStorage);
 });
 
 class AuthProvider extends AsyncNotifier<AuthResponseModel?> {
   @override
-  FutureOr<AuthResponseModel?> build() {
-    return null;
+  FutureOr<AuthResponseModel?> build() async {
+    // Appelé automatiquement au tout premier accès à authProvider
+    // (typiquement au démarrage de l'app, via goRouterProvider qui
+    // le lit dans son redirect). Tant que cette Future n'est pas
+    // résolue, authState.isLoading vaut true et !authState.hasValue
+    // aussi — le guard ne redirige pas encore (voir routes.dart).
+    final repository = ref.read(authRepositoryProvider);
+    return repository.restoreSession();
   }
 
   Future<void> signIn(String email, String password) async {
@@ -50,6 +54,15 @@ class AuthProvider extends AsyncNotifier<AuthResponseModel?> {
     state = await AsyncValue.guard(() async {
       final repository = ref.read(authRepositoryProvider);
       return repository.register(email, password, username);
+    });
+  }
+
+  Future<void> signOut() async {
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      final repository = ref.read(authRepositoryProvider);
+      await repository.logout();
+      return null; // ← état repassé à null : le guard redirige vers /login
     });
   }
 }

@@ -11,19 +11,15 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    // return MaterialApp(
-    //   title: 'Flutter Demo',
-    //   theme: ThemeData(
-    //     colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-    //   ),
-    //   home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    // );
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(
+      goRouterProvider,
+    ); // ← était appRouter (variable statique)
+
     return ListenableBuilder(
       listenable: themeProvider,
       builder: (context, child) {
@@ -33,7 +29,6 @@ class MyApp extends StatelessWidget {
             colorSchemeSeed: Colors.deepPurple,
             brightness: Brightness.light,
           ),
-
           darkTheme: ThemeData(
             useMaterial3: true,
             colorSchemeSeed: Colors.deepPurple,
@@ -41,9 +36,8 @@ class MyApp extends StatelessWidget {
           ),
           themeMode: themeProvider.isDarkMode
               ? ThemeMode.dark
-              : ThemeMode.light, // lequel des deux utiliser
-
-          routerConfig: appRouter,
+              : ThemeMode.light,
+          routerConfig: router,
           title: 'Flutter Demo',
         );
       },
