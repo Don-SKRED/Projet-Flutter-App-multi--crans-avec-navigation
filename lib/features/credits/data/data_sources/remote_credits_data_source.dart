@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:multi_screen_app_with_navigation/core/network/error/dio_error_mapper.dart';
-import 'package:multi_screen_app_with_navigation/features/credits/domain/credits_model.dart';
+import 'package:multi_screen_app_with_navigation/features/credits/data/model/credits_model.dart';
 
 abstract class RemoteCreditsDataSource {
   Future<List<Credits>> findByFilmId(int filmId);
@@ -16,7 +16,7 @@ class RemoteCreditsDataSourceImpl implements RemoteCreditsDataSource {
     try {
       final response = await dio.get(
         "/rest/v1/credits", // ← toujours avec le "/" au début !
-        queryParameters: {'filmId': 'eq.$filmId', 'select': '*'},
+        queryParameters: {'film_id': 'eq.$filmId', 'select': '*'},
       );
       return (response.data as List)
           .map((e) => Credits.fromJson(e as Map<String, dynamic>))
@@ -34,7 +34,7 @@ class RemoteCreditsDataSourceImpl implements RemoteCreditsDataSource {
     try {
       final response = await dio.get(
         "/rest/v1/credits",
-        queryParameters: {'personId': 'eq.$personId', 'select': '*'},
+        queryParameters: {'person_id': 'eq.$personId', 'select': '*'},
       );
       return (response.data as List)
           .map((e) => Credits.fromJson(e as Map<String, dynamic>))

@@ -15,6 +15,8 @@ import 'package:multi_screen_app_with_navigation/features/person/presentation/wi
 import 'package:multi_screen_app_with_navigation/core/utils/theme_provider.dart';
 import 'package:multi_screen_app_with_navigation/core/widgets/search_result_section.dart';
 import 'package:multi_screen_app_with_navigation/core/utils/responsive.dart';
+import 'package:multi_screen_app_with_navigation/features/auth/presentation/provider/auth_provider.dart';
+import 'package:multi_screen_app_with_navigation/core/widgets/offline_banner_widget.dart';
 
 class Homepage extends ConsumerStatefulWidget {
   const Homepage({super.key});
@@ -104,12 +106,48 @@ class _HomepageState extends ConsumerState<Homepage> {
             },
             icon: Icon(Icons.search),
           ),
+          IconButton(
+            tooltip: 'Se déconnecter',
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              final confirm = await showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Déconnexion'),
+                  content: const Text(
+                    'Voulez-vous vraiment vous déconnecter ?',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text('Annuler'),
+                    ),
+                    FilledButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: const Text('Déconnexion'),
+                    ),
+                  ],
+                ),
+              );
+
+              if (confirm == true) {
+                await ref.read(authProvider.notifier).signOut();
+              }
+            },
+          ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(filmsProvider);
+          ref.invalidate(personsProvider);
+        },
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const OfflineBannerWidget(),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -187,8 +225,9 @@ class _HomepageState extends ConsumerState<Homepage> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }
 
 class MySearchDelegate extends SearchDelegate {

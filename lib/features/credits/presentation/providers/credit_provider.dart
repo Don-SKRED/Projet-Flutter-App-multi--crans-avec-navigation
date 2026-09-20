@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:multi_screen_app_with_navigation/core/database/database_provider.dart';
 import 'package:multi_screen_app_with_navigation/core/providers/core_provider.dart';
+import 'package:multi_screen_app_with_navigation/features/credits/data/data_sources/local_credits_data_source.dart';
 import 'package:multi_screen_app_with_navigation/features/credits/data/data_sources/remote_credits_data_source.dart';
 import 'package:multi_screen_app_with_navigation/features/credits/data/repositories/credits_repository_impl.dart';
-import 'package:multi_screen_app_with_navigation/features/credits/domain/credits_model.dart';
+import 'package:multi_screen_app_with_navigation/features/credits/data/model/credits_model.dart';
 import 'package:multi_screen_app_with_navigation/features/credits/domain/repositories/credits_repository.dart';
 
 final remoteCreditsDataSourceProvider = Provider<RemoteCreditsDataSource>((
@@ -13,10 +15,17 @@ final remoteCreditsDataSourceProvider = Provider<RemoteCreditsDataSource>((
   return RemoteCreditsDataSourceImpl(dio: dio);
 });
 
+final localCreditsDataSourceProvider = Provider<LocalCreditsDataSource>((ref) {
+  final db = ref.watch(appDatabaseProvider);
+  return LocalCreditsDataSourceImpl(database: db);
+});
+
 final creditsRepositoryProvider = Provider<CreditsRepository>((ref) {
   final remoteCreditsDataSource = ref.watch(remoteCreditsDataSourceProvider);
+  final localCreditsDataSource = ref.watch(localCreditsDataSourceProvider);
   return CreditsRepositoryImpl(
     remoteCreditsDataSource: remoteCreditsDataSource,
+    localCreditsDataSource: localCreditsDataSource,
   );
 });
 

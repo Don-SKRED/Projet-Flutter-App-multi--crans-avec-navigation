@@ -7,6 +7,7 @@ import 'package:multi_screen_app_with_navigation/features/credits/presentation/p
 import 'package:multi_screen_app_with_navigation/features/film/presentation/providers/film_provider.dart';
 import 'package:multi_screen_app_with_navigation/features/person/presentation/providers/person_provider.dart';
 import 'package:multi_screen_app_with_navigation/features/person/presentation/widgets/card_person_widget.dart';
+import 'package:multi_screen_app_with_navigation/core/widgets/offline_banner_widget.dart';
 
 class SpecificFilmPage extends ConsumerWidget {
   final int filmId;
@@ -199,6 +200,12 @@ class SpecificFilmPage extends ConsumerWidget {
                       ],
                     ),
                   ),
+                ),
+              ),
+              const SafeArea(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: OfflineBannerWidget(),
                 ),
               ),
             ],

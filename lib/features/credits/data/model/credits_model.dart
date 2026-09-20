@@ -17,8 +17,8 @@ class Credits {
   int get id => _id;
   factory Credits.fromJson(Map<String, dynamic> json) => Credits(
     json['id'],
-    filmId: json['filmId'],
-    personId: json['personId'],
+    filmId: json['film_id'],
+    personId: json['person_id'],
     role: RoleCredit.values.byName(json['role']),
     personnage: json['personnage'],
   );

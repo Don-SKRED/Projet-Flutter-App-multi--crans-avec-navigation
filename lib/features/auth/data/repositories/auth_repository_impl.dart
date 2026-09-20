@@ -39,8 +39,14 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Future<void> logout() async {
-    await remoteAuthDataSource.logout();
-    await secureStorage.clear();
+    try {
+      await remoteAuthDataSource.logout();
+    } catch (_) {
+      // Même si le serveur renvoie une erreur (ex: token déjà révoqué ou pas de réseau),
+      // on nettoie toujours le stockage local.
+    } finally {
+      await secureStorage.clear();
+    }
   }
 
   @override
