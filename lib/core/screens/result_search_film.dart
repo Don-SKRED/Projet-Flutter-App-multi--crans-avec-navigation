@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:multi_screen_app_with_navigation/features/film/domain/film_model.dart';
+import 'package:multi_screen_app_with_navigation/features/film/data/model/film_model.dart';
 import 'package:multi_screen_app_with_navigation/features/film/presentation/widget/search_card_film.dart';
 
 class ResultSearchFilm extends StatefulWidget {

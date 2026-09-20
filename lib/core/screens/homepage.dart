@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_screen_app_with_navigation/features/film/application/services/film_service.dart';
-import 'package:multi_screen_app_with_navigation/features/film/domain/film_model.dart';
+import 'package:multi_screen_app_with_navigation/features/film/data/model/film_model.dart';
+import 'package:multi_screen_app_with_navigation/features/film/presentation/providers/film_provider.dart';
 
 import 'package:multi_screen_app_with_navigation/features/film/presentation/widget/card_film_widget.dart';
 import 'package:multi_screen_app_with_navigation/features/film/presentation/widget/search_card_film.dart';
@@ -13,14 +15,14 @@ import 'package:multi_screen_app_with_navigation/core/utils/theme_provider.dart'
 import 'package:multi_screen_app_with_navigation/core/widgets/search_result_section.dart';
 import 'package:multi_screen_app_with_navigation/core/utils/responsive.dart';
 
-class Homepage extends StatefulWidget {
+class Homepage extends ConsumerStatefulWidget {
   const Homepage({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  ConsumerState<Homepage> createState() => _HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomepageState extends ConsumerState<Homepage> {
   final filmService = FilmService();
   final personService = PersonService();
   final String titleAppBar = "Film page";
@@ -62,6 +64,7 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    final allFilms = ref.watch(filmsProvider);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -115,29 +118,30 @@ class _HomepageState extends State<Homepage> {
             Container(
               decoration: const BoxDecoration(color: Colors.deepPurple),
               height: context.filmsListHeight,
-              child: FutureBuilder(
-                future: _filmsFuture,
-                builder: (context, asyncSnapshot) {
-                  if (asyncSnapshot.hasData) {
-                    final data = asyncSnapshot.data!;
-                    return ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () => context.push(
-                            "film/${data[index].id}",
-                            extra: filmService,
-                          ),
-                          child: CardFilmWidget(film: data[index]),
-                        );
-                      },
-                      separatorBuilder: (context, index) =>
-                          SizedBox(width: context.spacing),
-                      itemCount: data.length,
-                    );
-                  } else {
-                    return CircularProgressIndicator();
-                  }
+              child: allFilms.when(
+                data: (data) {
+                  print("data: $data");
+                  return ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () => context.push(
+                          "film/${data[index].id}",
+                          extra: filmService,
+                        ),
+                        child: CardFilmWidget(film: data[index]),
+                      );
+                    },
+                    separatorBuilder: (context, index) =>
+                        SizedBox(width: context.spacing),
+                    itemCount: data.length,
+                  );
+                },
+                error: (error, _) {
+                  return Center(child: Text("Error : $error"));
+                },
+                loading: () {
+                  return Center(child: CircularProgressIndicator());
                 },
               ),
             ),

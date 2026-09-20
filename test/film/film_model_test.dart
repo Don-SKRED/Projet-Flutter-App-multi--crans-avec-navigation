@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:multi_screen_app_with_navigation/features/film/domain/film_model.dart';
+import 'package:multi_screen_app_with_navigation/features/film/data/model/film_model.dart';
 
 void main() {
   // Un film de référence réutilisé dans plusieurs tests
@@ -28,7 +28,10 @@ void main() {
       expect(film.id, equals(1));
       expect(film.title, equals('Inception'));
       expect(film.release, equals(2010));
-      expect(film.synopsis, equals('A thief who steals corporate secrets through dream-sharing.'));
+      expect(
+        film.synopsis,
+        equals('A thief who steals corporate secrets through dream-sharing.'),
+      );
       expect(film.genre, equals('Sci-Fi'));
       expect(film.poster, equals('inception.jpg'));
     });
@@ -52,24 +55,33 @@ void main() {
       expect(json['id'], equals(1));
       expect(json['title'], equals('Inception'));
       expect(json['release'], equals(2010));
-      expect(json['synopsis'], equals('A thief who steals corporate secrets through dream-sharing.'));
+      expect(
+        json['synopsis'],
+        equals('A thief who steals corporate secrets through dream-sharing.'),
+      );
       expect(json['genre'], equals('Sci-Fi'));
       expect(json['poster'], equals('inception.jpg'));
     });
 
     test('toJson contient exactement les 6 clés attendues', () {
       final json = referenceFilm.toJson();
-      expect(json.keys, containsAll(['id', 'title', 'release', 'synopsis', 'genre', 'poster']));
+      expect(
+        json.keys,
+        containsAll(['id', 'title', 'release', 'synopsis', 'genre', 'poster']),
+      );
       expect(json.length, equals(6));
     });
   });
 
   group('Film.fromJson() → toJson() (aller-retour)', () {
-    test('fromJson puis toJson donne un résultat identique au JSON original', () {
-      final film = Film.fromJson(referenceJson);
-      final backToJson = film.toJson();
+    test(
+      'fromJson puis toJson donne un résultat identique au JSON original',
+      () {
+        final film = Film.fromJson(referenceJson);
+        final backToJson = film.toJson();
 
-      expect(backToJson, equals(referenceJson));
-    });
+        expect(backToJson, equals(referenceJson));
+      },
+    );
   });
 }

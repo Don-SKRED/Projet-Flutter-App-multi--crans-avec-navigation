@@ -8,7 +8,7 @@ import 'package:multi_screen_app_with_navigation/features/auth/presentation/prov
 import 'package:multi_screen_app_with_navigation/features/auth/presentation/screens/login_screen.dart';
 import 'package:multi_screen_app_with_navigation/features/auth/presentation/screens/signup_screen.dart';
 import 'package:multi_screen_app_with_navigation/features/film/application/services/film_service.dart';
-import 'package:multi_screen_app_with_navigation/features/film/domain/film_model.dart';
+import 'package:multi_screen_app_with_navigation/features/film/data/model/film_model.dart';
 import 'package:multi_screen_app_with_navigation/features/film/presentation/screens/film_form.dart';
 import 'package:multi_screen_app_with_navigation/features/film/presentation/screens/specific_film_page.dart';
 import 'package:multi_screen_app_with_navigation/features/person/application/service/person_service.dart';

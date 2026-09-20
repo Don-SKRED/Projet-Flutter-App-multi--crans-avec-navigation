@@ -2,22 +2,12 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:multi_screen_app_with_navigation/core/network/dio_client.dart';
-import 'package:multi_screen_app_with_navigation/core/storage/secure_storage_service.dart';
+import 'package:multi_screen_app_with_navigation/core/providers/core_provider.dart';
 import 'package:multi_screen_app_with_navigation/features/auth/data/dataSources/auth_data_source.dart';
 import 'package:multi_screen_app_with_navigation/features/auth/data/model/auth_response_model.dart';
 import 'package:multi_screen_app_with_navigation/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:multi_screen_app_with_navigation/features/auth/domain/repositories/auth_repository.dart';
 
-final secureStorageProvider = Provider<SecureStorageService>((ref) {
-  return SecureStorageService();
-});
-final dioClientProvider = Provider<DioClient>((ref) {
-  return DioClient(storage: ref.watch(secureStorageProvider));
-});
-final apiClientProvider = Provider<Dio>((ref) {
-  return ref.watch(dioClientProvider).dio;
-});
 final remoteAuthDataSourceProvider = Provider<RemoteAuthDataSource>((ref) {
   final Dio dio = ref.watch(apiClientProvider);
   return RemoteAuthDataSourceImpl(dio);

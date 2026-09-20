@@ -69,7 +69,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:multi_screen_app_with_navigation/features/film/domain/film_model.dart';
+import 'package:multi_screen_app_with_navigation/features/film/data/model/film_model.dart';
 import 'package:multi_screen_app_with_navigation/core/utils/responsive.dart';
 
 class CardFilmWidget extends StatelessWidget {
