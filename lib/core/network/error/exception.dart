@@ -19,7 +19,13 @@ class TimeoutException extends AppException {
 }
 
 class UnauthorizedException extends AppException {
-  const UnauthorizedException() : super('Session expirée, reconnecte-toi');
+  final int? statusCode;
+
+  const UnauthorizedException(
+    String s, {
+    String message = 'Le serveur a rencontré un problème',
+    this.statusCode,
+  }) : super(message);
 }
 
 class ForbiddenException extends AppException {
@@ -35,7 +41,12 @@ class ConflictException extends AppException {
 }
 
 class ServerException extends AppException {
-  const ServerException() : super('Le serveur a rencontré un problème');
+  final int? statusCode;
+
+  const ServerException({
+    String message = 'Le serveur a rencontré un problème',
+    this.statusCode,
+  }) : super(message);
 }
 
 class UnknownException extends AppException {

@@ -64,11 +64,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: "/film/:id",
         builder: (context, state) {
           final id = state.pathParameters['id']!;
-          final filmService = (state.extra as FilmService?) ?? FilmService();
-          return SpecificFilmPage(
-            filmId: int.parse(id),
-            filmService: filmService,
-          );
+          // final filmService = (state.extra as FilmService?) ?? FilmService();
+          return SpecificFilmPage(filmId: int.parse(id));
         },
       ),
       GoRoute(

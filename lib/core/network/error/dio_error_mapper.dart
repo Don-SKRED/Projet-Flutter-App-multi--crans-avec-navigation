@@ -18,9 +18,14 @@ AppException mapDioException(DioException e) {
       final body = e.response?.data;
       switch (status) {
         case 400:
-          return const InvalidInputException();
+          return ServerException(
+            message: 'Requête invalide',
+            statusCode: status,
+          );
         case 401:
-          return const UnauthorizedException();
+          return const UnauthorizedException(
+            'Accès non autorisé — reconnectez-vous',
+          );
         case 403:
           return const ForbiddenException();
         case 404:

@@ -9,6 +9,7 @@ import 'package:multi_screen_app_with_navigation/features/film/presentation/widg
 import 'package:multi_screen_app_with_navigation/features/film/presentation/widget/search_card_film.dart';
 import 'package:multi_screen_app_with_navigation/features/person/application/service/person_service.dart';
 import 'package:multi_screen_app_with_navigation/features/person/domain/person_model.dart';
+import 'package:multi_screen_app_with_navigation/features/person/presentation/providers/person_provider.dart';
 import 'package:multi_screen_app_with_navigation/features/person/presentation/widgets/card_person_widget.dart';
 import 'package:multi_screen_app_with_navigation/features/person/presentation/widgets/search_card_person.dart';
 import 'package:multi_screen_app_with_navigation/core/utils/theme_provider.dart';
@@ -65,6 +66,7 @@ class _HomepageState extends ConsumerState<Homepage> {
   @override
   Widget build(BuildContext context) {
     final allFilms = ref.watch(filmsProvider);
+    final allPersons = ref.watch(personsProvider);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -127,7 +129,7 @@ class _HomepageState extends ConsumerState<Homepage> {
                       return InkWell(
                         onTap: () => context.push(
                           "film/${data[index].id}",
-                          extra: filmService,
+                          // extra: filmService,
                         ),
                         child: CardFilmWidget(film: data[index]),
                       );
@@ -153,33 +155,34 @@ class _HomepageState extends ConsumerState<Homepage> {
               ),
             ),
 
-            FutureBuilder(
-              future: _personsFuture,
-              builder: (context, asyncSnapshot) {
-                if (asyncSnapshot.hasData) {
-                  final data = asyncSnapshot.data!;
-                  return SizedBox(
-                    height: context.personListHeight,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () => context.push(
-                            "person/${data[index].id}",
-                            extra: personService,
-                          ),
-                          child: CardPersonWidget(person: data[index]),
-                        );
-                      },
-                      separatorBuilder: (context, index) =>
-                          SizedBox(width: context.spacing),
-                      itemCount: data.length,
-                    ),
+            SizedBox(
+              height: context.personListHeight,
+              child: allPersons.when(
+                data: (data) {
+                  print("data: $data");
+                  return ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () => context.push(
+                          "person/${data[index].id}",
+                          extra: personService,
+                        ),
+                        child: CardPersonWidget(person: data[index]),
+                      );
+                    },
+                    separatorBuilder: (context, index) =>
+                        SizedBox(width: context.spacing),
+                    itemCount: data.length,
                   );
-                } else {
-                  return CircularProgressIndicator();
-                }
-              },
+                },
+                error: (error, _) {
+                  return Center(child: Text("Error : $error"));
+                },
+                loading: () {
+                  return Center(child: CircularProgressIndicator());
+                },
+              ),
             ),
           ],
         ),
