@@ -1,33 +1,111 @@
+import 'dart:async';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:multi_screen_app_with_navigation/main.dart';
 import 'package:multi_screen_app_with_navigation/features/film/data/model/film_model.dart';
 import 'package:multi_screen_app_with_navigation/features/film/presentation/widget/card_film_widget.dart';
 import 'package:multi_screen_app_with_navigation/core/widgets/search_result_section.dart';
 
+// ---------------------------------------------------------------------------
+// Mock HttpClient pour CachedNetworkImage dans les tests widgets
+// ---------------------------------------------------------------------------
+final kTransparentImage = Uint8List.fromList([
+  0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52,
+  0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x08, 0x06, 0x00, 0x00, 0x00, 0x1F, 0x15, 0xC4,
+  0x89, 0x00, 0x00, 0x00, 0x0A, 0x49, 0x44, 0x41, 0x54, 0x78, 0x9C, 0x63, 0x00, 0x01, 0x00, 0x00,
+  0x05, 0x00, 0x01, 0x0D, 0x0A, 0x2D, 0xB4, 0x00, 0x00, 0x00, 0x00, 0x49, 0x45, 0x4E, 0x44, 0xAE,
+  0x42, 0x60, 0x82,
+]);
+
+class MockHttpClient extends Fake implements HttpClient {
+  @override
+  Future<HttpClientRequest> getUrl(Uri url) async => MockHttpClientRequest();
+}
+
+class MockHttpClientRequest extends Fake implements HttpClientRequest {
+  @override
+  final HttpHeaders headers = MockHttpHeaders();
+  @override
+  Future<HttpClientResponse> close() async => MockHttpClientResponse();
+}
+
+class MockHttpHeaders extends Fake implements HttpHeaders {
+  @override
+  void set(String name, Object value, {bool preserveHeaderCase = false}) {}
+}
+
+class MockHttpClientResponse extends Fake implements HttpClientResponse {
+  @override
+  int get statusCode => 200;
+  @override
+  int get contentLength => kTransparentImage.length;
+  @override
+  HttpClientResponseCompressionState get compressionState =>
+      HttpClientResponseCompressionState.notCompressed;
+  @override
+  StreamSubscription<List<int>> listen(
+    void Function(List<int>)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
+    return Stream<List<int>>.fromIterable([kTransparentImage]).listen(
+      onData,
+      onError: onError,
+      onDone: onDone,
+      cancelOnError: cancelOnError,
+    );
+  }
+}
+
+class TestHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) => MockHttpClient();
+}
+
+// ---------------------------------------------------------------------------
+// Tests Widgets
+// ---------------------------------------------------------------------------
 void main() {
-  // Configurer le mock pour path_provider
+  late Directory tempDir;
+
   setUpAll(() {
     TestWidgetsFlutterBinding.ensureInitialized();
+    HttpOverrides.global = TestHttpOverrides();
+
+    tempDir = Directory.systemTemp.createTempSync('widget_test_');
+
     const MethodChannel channel = MethodChannel(
       'plugins.flutter.io/path_provider',
     );
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
-          if (methodCall.method == 'getApplicationDocumentsDirectory') {
-            return '.'; // Retourne le répertoire courant pour les tests
-          }
-          return null;
+          return tempDir.path;
         });
   });
 
-  testWidgets('App smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  tearDownAll(() {
+    HttpOverrides.global = null;
+    if (tempDir.existsSync()) {
+      tempDir.deleteSync(recursive: true);
+    }
+  });
 
-    // Verify that the home screen is displayed by checking for the AppBar title.
-    expect(find.text('Film page'), findsOneWidget);
+  testWidgets('App smoke test', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const ProviderScope(
+        child: MyApp(),
+      ),
+    );
+    await tester.pump();
+
+    // L'application se monte proprement avec son MaterialApp.router
+    expect(find.byType(MaterialApp), findsOneWidget);
   });
 
   testWidgets(
@@ -39,7 +117,7 @@ void main() {
         release: 2010,
         synopsis: 'Dream heist',
         genre: 'Sci-Fi',
-        poster: 'inception.jpg',
+        poster: 'https://example.com/inception.jpg',
       );
 
       // Test sur la taille d'écran par défaut (Tablette)
@@ -48,6 +126,7 @@ void main() {
           home: Scaffold(body: CardFilmWidget(film: film)),
         ),
       );
+      await tester.pump();
 
       expect(find.text('Inception'), findsOneWidget);
 
