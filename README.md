@@ -4,37 +4,57 @@
 [![State Management](https://img.shields.io/badge/State_Management-Riverpod_3-purple.svg)](https://riverpod.dev)
 [![Database](https://img.shields.io/badge/Database-Drift_(SQLite)-green.svg)](https://drift.simonbinder.eu/)
 [![Network](https://img.shields.io/badge/Network-Dio-orange.svg)](https://pub.dev/packages/dio)
-[![Tests](https://img.shields.io/badge/Tests-23_Passed-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-27_Passed-brightgreen.svg)]()
+
+Application mobile Flutter complète connectée à un backend réel (**Supabase REST API & Auth**), implémentant une architecture **Feature-First / Clean Architecture**, une gestion d'état réactive avec **Riverpod**, une persistance locale avec **Drift (SQLite)**, un mode hors-ligne avec cache-fallback automatique et une suite complète de tests unitaires sur la couche repository (27 tests passés avec 100% de succès).
 
 ---
 
-## 📑 Sommaire des Exigences et Preuves de Code
+## 📸 Galerie & Aperçu de l'Application
 
-1. [Fonctionnalité 1 : Authentification (login / register / logout) — JWT](#-1-authentification-login--register--logout--jwt)
-2. [Fonctionnalité 2 : Au moins 3 écrans de données issues d'une API REST](#-2-au-moins-3-écrans-de-données-issues-dune-api-rest)
-3. [Fonctionnalité 3 : Mise en cache locale des données (SQLite avec Drift)](#-3-mise-en-cache-locale-des-données-sqlite-avec-drift)
-4. [Fonctionnalité 4 : Mode hors-ligne (afficher les données cachées si pas de réseau)](#-4-mode-hors-ligne-afficher-les-données-cachées-si-pas-de-réseau)
-5. [Fonctionnalité 5 : Gestion d'erreurs réseau avec messages utilisateur](#-5-gestion-derreurs-réseau-avec-messages-utilisateur)
-6. [Exigence Technique 1 : Architecture Clean / Feature-First](#-6-architecture-clean--feature-first)
-7. [Exigence Technique 2 : Repository Pattern pour l'accès aux données](#-7-repository-pattern-pour-laccès-aux-données)
-8. [Exigence Technique 3 : Dio pour les appels réseau](#-8-dio-pour-les-appels-réseau)
-9. [Exigence Technique 4 : Intercepteur pour l'injection du token d'auth](#-9-intercepteur-pour-linjection-du-token-dauth)
-10. [Exigence Technique 5 : Gestion du refresh token](#-10-gestion-du-refresh-token)
-11. [Exigence Technique 6 : Au moins 3 tests unitaires sur la couche repository](#-11-au-moins-3-tests-unitaires-sur-la-couche-repository)
-12. [Instructions de lancement et de reproduction](#-12-instructions-de-lancement-et-de-reproduction)
+| 🏠 Accueil & Catalogue | 🎬 Fiche Film & Casting | 👤 Personnalité & Bio |
+| :---: | :---: | :---: |
+| ![Accueil](screenshot/homepage.png) | ![Détail film](screenshot/page%20film.png) | ![Fiche personnalité](screenshot/page%20personnalité.png) |
+
+| 🔍 Recherche & Filtres | 📑 Liste Complète Films | 🎭 Liste Personnalités |
+| :---: | :---: | :---: |
+| ![Recherche](screenshot/page%20de%20recherche%20et%20flitrage.png) | ![Résultats films](screenshot/page%20de%20recherche%20et%20filitrage(affihcer%20plus%20de%20film).png) | ![Résultats personnalités](screenshot/page%20de%20recherche%20et%20filitrage(affihcer%20plus%20de%20personnalité).png) |
+
+| ✍️ Formulaire d'Ajout |
+| :---: |
+| ![Formulaire d'ajout](screenshot/formulaire%20d'ajout%20de%20film.png) |
+
+---
+
+## 📋 Grille d'Évaluation & Preuves d'Implémentation (100 pts)
+
+Chaque exigence du projet est détaillée ci-dessous avec : **le fichier source exact**, **les lignes de code correspondantes**, **l'aperçu du code source** et **la capture d'écran associée**.
+
+| Exigence du Sujet | Fichier(s) Source | Lignes de Code | Statut |
+| :--- | :--- | :---: | :---: |
+| **1. Authentification (login/register/logout) — JWT** | `lib/features/auth/data/repositories/auth_repository_impl.dart`<br>`lib/core/screens/homepage.dart` | `13 - 50`<br>`110 - 136` | ✅ Validé |
+| **2. Au moins 3 écrans de données issues d'une API REST** | `lib/core/screens/homepage.dart`<br>`lib/features/film/presentation/screens/specific_film_page.dart`<br>`lib/features/person/presentation/screens/specific_person.dart` | `79 - 224`<br>`16 - 208`<br>`22 - 283` | ✅ Validé |
+| **3. Mise en cache locale des données (SQLite)** | `lib/core/database/tables/films_table.dart`<br>`lib/core/database/app_database.dart`<br>`lib/features/film/data/data_sources/local_film_data_source.dart` | `3 - 14`<br>`13 - 29`<br>`18 - 68` | ✅ Validé |
+| **4. Mode hors-ligne : afficher le cache si pas de réseau** | `lib/features/film/data/repositories/film_repository_impl.dart`<br>`lib/core/network/connectivity_provider.dart`<br>`lib/core/widgets/offline_banner_widget.dart` | `16 - 29`<br>`10 - 21`<br>`12 - 36` | ✅ Validé |
+| **5. Gestion d'erreurs réseau avec messages utilisateur** | `lib/core/network/error/exception.dart`<br>`lib/core/network/error/dio_error_mapper.dart` | `2 - 54`<br>`5 - 49` | ✅ Validé |
+| **6. Architecture Clean (data/domain/presentation)** | Structure `lib/core/` et `lib/features/` | Projet entier | ✅ Validé |
+| **7. Repository Pattern pour l'accès aux données** | `lib/features/film/domain/repositories/film_repository.dart`<br>`lib/features/film/data/repositories/film_repository_impl.dart` | Contrat & Implémentation | ✅ Validé |
+| **8. Dio pour les appels réseau** | `lib/core/network/dio_client.dart` | `28 - 40` | ✅ Validé |
+| **9. Intercepteur pour l'injection du token d'auth** | `lib/core/network/dio_client.dart` | `41 - 49` | ✅ Validé |
+| **10. Gestion du refresh token** | `lib/core/network/dio_client.dart` | `50 - 98` | ✅ Validé |
+| **11. Au moins 3 tests unitaires sur le repository** | `test/features/film/data/repositories/film_repository_impl_test.dart`<br>`test/features/person/data/repositories/person_repository_impl_test.dart`<br>`test/features/credits/data/repositories/credits_repository_impl_test.dart`<br>`test/features/auth/data/repositories/auth_repository_impl_test.dart` | 27 tests validés (100% succès) | ✅ Validé |
 
 ---
 
 ## 🔐 1. Authentification (login / register / logout) — JWT
 
-L'authentification est entièrement fonctionnelle avec Supabase Auth (JWT), gère l'inscription, la connexion et la déconnexion avec persistance sécurisée des jetons d'accès.
+L'authentification est connectée à l'API Supabase Auth. Les jetons JWT (`access_token` et `refresh_token`) sont stockés de façon chiffrée avec `flutter_secure_storage`.
 
-### Fichier & Lignes :
 - **Fichier** : `lib/features/auth/data/repositories/auth_repository_impl.dart`
-- **Lignes** : `13 - 50`
+- **Lignes de code** : `13 - 50`
 
 ```dart
-// lib/features/auth/data/repositories/auth_repository_impl.dart (Lignes 13-50)
+// lib/features/auth/data/repositories/auth_repository_impl.dart
 @override
 Future<AuthResponseModel> login(String email, String password) async {
   final response = await remoteAuthDataSource.login(email, password);
@@ -60,32 +80,35 @@ Future<void> logout() async {
   try {
     await remoteAuthDataSource.logout();
   } catch (_) {
-    // Nettoyage local garanti même en cas d'erreur serveur
+    // Nettoyage local garanti même en cas d'indisponibilité du réseau
   } finally {
     await secureStorage.clear();
   }
 }
 ```
 
-- **Déconnexion dans l'AppBar** : `lib/core/screens/homepage.dart` (Lignes `110-136`) : boîte de dialogue de confirmation appelant `authProvider.notifier.signOut()`.
-- **Redirection automatique** : `lib/routing/routes.dart` (Lignes `27-38`) : redirection vers `/login` si non authentifié.
+- **Déconnexion sécurisée** : `lib/core/screens/homepage.dart` (Lignes `110-136`) : boîte de dialogue de confirmation appelant `authProvider.notifier.signOut()`.
+- **Protection des routes** : `lib/routing/routes.dart` (Lignes `27-38`) : redirection automatique vers `/login` si aucun jeton valide n'est présent.
 
 ---
 
 ## 📱 2. Au moins 3 écrans de données issues d'une API REST
 
-L'application intègre 3 écrans connectés en temps réel aux endpoints Supabase REST via Riverpod :
+Les données sont consommées depuis l'API REST réelle de Supabase via des `FutureProvider` Riverpod avec gestion d'état réactive (`.when()`) :
 
-### Écran 1 : Page d'accueil (Catalogue Films et Personnalités)
+### Écran 1 : Page d'accueil (Films & Personnalités en direct)
 - **Fichier** : `lib/core/screens/homepage.dart`
-- **Lignes** : `79 - 224`
+- **Lignes de code** : `79 - 224`
 - **Endpoints REST** : `GET /rest/v1/films` & `GET /rest/v1/persons`
+- **Aperçu visuel** :
+
+![Écran 1 - Accueil](screenshot/homepage.png)
+
 ```dart
 // lib/core/screens/homepage.dart (Lignes 79-81 & 153-178)
 final allFilms = ref.watch(filmsProvider);
 final allPersons = ref.watch(personsProvider);
 
-// Affichage réactif avec .when(data, error, loading)
 allFilms.when(
   data: (data) => ListView.separated(
     scrollDirection: Axis.horizontal,
@@ -97,10 +120,16 @@ allFilms.when(
 );
 ```
 
-### Écran 2 : Fiche détaillée d'un Film (Informations + Casting)
+---
+
+### Écran 2 : Fiche détaillée d'un Film (Infos + Casting)
 - **Fichier** : `lib/features/film/presentation/screens/specific_film_page.dart`
-- **Lignes** : `16 - 208`
+- **Lignes de code** : `16 - 208`
 - **Endpoints REST** : `GET /rest/v1/films?id=eq.{id}` & `GET /rest/v1/credits?film_id=eq.{id}`
+- **Aperçu visuel** :
+
+![Écran 2 - Détail Film](screenshot/page%20film.png)
+
 ```dart
 // lib/features/film/presentation/screens/specific_film_page.dart (Lignes 18-33)
 final filmAsync = ref.watch(filmByIdProvider(filmId));
@@ -113,17 +142,23 @@ return Scaffold(
     data: (film) => Stack(
       children: [
         CachedNetworkImage(imageUrl: film!.poster),
-        // Informations détaillées + casting issu de creditsAsync
+        // Détails du film et casting réactif via creditsAsync
       ],
     ),
   ),
 );
 ```
 
+---
+
 ### Écran 3 : Fiche détaillée d'une Personnalité (Bio + Filmographie)
 - **Fichier** : `lib/features/person/presentation/screens/specific_person.dart`
-- **Lignes** : `22 - 283`
+- **Lignes de code** : `22 - 283`
 - **Endpoints REST** : `GET /rest/v1/persons?id=eq.{id}` & `GET /rest/v1/credits?person_id=eq.{id}`
+- **Aperçu visuel** :
+
+![Écran 3 - Fiche Personnalité](screenshot/page%20personnalité.png)
+
 ```dart
 // lib/features/person/presentation/screens/specific_person.dart (Lignes 24-40)
 final personAsync = ref.watch(personByIdProvider(personId));
@@ -135,7 +170,7 @@ return Scaffold(
     error: (error, _) => Center(child: Text('Erreur : $error')),
     data: (person) => Stack(
       children: [
-        // Photo, Nom, Date de naissance et liste des films participés
+        // Bio, photo de profil et filmographie via creditsAsync
       ],
     ),
   ),
@@ -146,26 +181,13 @@ return Scaffold(
 
 ## 💾 3. Mise en cache locale des données (SQLite avec Drift)
 
-La mise en cache utilise **Drift ORM (SQLite)** avec des tables strictement typées, des transactions batch et une base de données générée.
+La persistance locale est assurée par un ORM SQLite moderne et typé : **Drift**.
 
-### Fichiers & Lignes :
-- **Table Films SQLite** : `lib/core/database/tables/films_table.dart` (Lignes `3-14`)
-```dart
-class FilmsTable extends Table {
-  IntColumn get id => integer()();
-  TextColumn get title => text()();
-  IntColumn get release => integer()();
-  TextColumn get synopsis => text()();
-  TextColumn get genre => text()();
-  TextColumn get poster => text()();
-
-  @override
-  Set<Column> get primaryKey => {id};
-}
-```
-- **Table Persons SQLite** : `lib/core/database/tables/persons_table.dart` (Lignes `3-12`)
-- **Table Credits SQLite** : `lib/core/database/tables/credits_table.dart` (Lignes `3-12`)
-- **Base de données Drift** : `lib/core/database/app_database.dart` (Lignes `13-29`)
+- **Tables Drift typées** :
+  - `lib/core/database/tables/films_table.dart` (Lignes `3 - 14`) : Table SQLite `FilmsTable` (`id`, `title`, `release`, `synopsis`, `genre`, `poster`).
+  - `lib/core/database/tables/persons_table.dart` (Lignes `3 - 12`) : Table SQLite `PersonsTable` (`id`, `name`, `birthday`, `gender`, `face`).
+  - `lib/core/database/tables/credits_table.dart` (Lignes `3 - 12`) : Table SQLite `CreditsTable` (`id`, `filmId`, `personId`, `role`, `personnage`).
+- **Base de données SQLite typée** : `lib/core/database/app_database.dart` (Lignes `13 - 29`)
 ```dart
 @DriftDatabase(tables: [FilmsTable, PersonsTable, CreditsTable])
 class AppDatabase extends _$AppDatabase {
@@ -174,7 +196,7 @@ class AppDatabase extends _$AppDatabase {
   int get schemaVersion => 1;
 }
 ```
-- **Sauvegarde et Lecture LocalDataSource** : `lib/features/film/data/data_sources/local_film_data_source.dart` (Lignes `18-68`) :
+- **Opérations CRUD et Batch dans la LocalDataSource** : `lib/features/film/data/data_sources/local_film_data_source.dart` (Lignes `18 - 68`)
 ```dart
 @override
 Future<List<Film>> getAllFilms() async {
@@ -196,20 +218,18 @@ Future<void> saveFilms(List<Film> films) async {
 
 ## 📴 4. Mode hors-ligne (afficher les données cachées si pas de réseau)
 
-L'application applique le pattern **Cache-Fallback (Offline-First)** : toute donnée reçue du réseau est persistée dans Drift SQLite. Si le réseau est indisponible, le repository bascule immédiatement sur les données locales SQLite.
+L'application implémente le pattern **Cache-Fallback** : en ligne, elle synchronise les données distantes dans la base SQLite locale Drift ; en cas de panne réseau ou de mode avion, elle restitue immédiatement les données en cache.
 
-### Fichiers & Lignes :
-- **Stratégie Cache-Fallback dans le Repository** : `lib/features/film/data/repositories/film_repository_impl.dart` (Lignes `16-46`) :
+- **Stratégie Cache-Fallback dans le Repository** : `lib/features/film/data/repositories/film_repository_impl.dart` (Lignes `16 - 29`)
 ```dart
-// lib/features/film/data/repositories/film_repository_impl.dart (Lignes 16-29)
 @override
 Future<List<Film>> getAllFilm() async {
   try {
     final remoteFilms = await remoteFilmDataSource.getAllFilm();
-    await localFilmDataSource.saveFilms(remoteFilms); // Sauvegarde automatique en SQLite
+    await localFilmDataSource.saveFilms(remoteFilms); // Enregistrement SQLite Drift
     return remoteFilms;
   } catch (_) {
-    // Mode hors-ligne : si échec réseau, on retourne le cache local SQLite Drift
+    // Mode hors-ligne : lecture depuis le cache SQLite Drift
     final cachedFilms = await localFilmDataSource.getAllFilms();
     if (cachedFilms.isNotEmpty) {
       return cachedFilms;
@@ -218,42 +238,19 @@ Future<List<Film>> getAllFilm() async {
   }
 }
 ```
-*(Même logique implémentée dans `PersonRepositoryImpl` lignes 19-49 et `CreditsRepositoryImpl` lignes 19-54).*
+*(Implémentation identique dans `PersonRepositoryImpl` lignes 19-49 et `CreditsRepositoryImpl` lignes 19-54).*
 
-- **Détection de connectivité temps réel** : `lib/core/network/connectivity_provider.dart` (Lignes `10-21`) :
-```dart
-final isOnlineProvider = StreamProvider<bool>((ref) async* {
-  final connectivity = ref.watch(connectivityProvider);
-  final initialResults = await connectivity.checkConnectivity();
-  yield initialResults.any((result) => result != ConnectivityResult.none);
-  await for (final results in connectivity.onConnectivityChanged) {
-    yield results.any((result) => result != ConnectivityResult.none);
-  }
-});
-```
-
-- **Bandeau visuel hors-ligne** : `lib/core/widgets/offline_banner_widget.dart` (Lignes `12-36`) :
-Affiché en temps réel en haut de l'écran ([homepage.dart](file:///c:/dossier%20projects/flutter%20Projects/multi_screen_app_with_navigation/lib/core/screens/homepage.dart#L150), [specific_film_page.dart](file:///c:/dossier%20projects/flutter%20Projects/multi_screen_app_with_navigation/lib/features/film/presentation/screens/specific_film_page.dart#L207), [specific_person.dart](file:///c:/dossier%20projects/flutter%20Projects/multi_screen_app_with_navigation/lib/features/person/presentation/screens/specific_person.dart#L279)).
-
-- **Synchronisation manuelle (Pull-to-refresh)** : `lib/core/screens/homepage.dart` (Lignes `139-145`) :
-```dart
-body: RefreshIndicator(
-  onRefresh: () async {
-    ref.invalidate(filmsProvider);
-    ref.invalidate(personsProvider);
-  },
-  child: SingleChildScrollView(...),
-)
-```
+- **Détection de connectivité temps réel** : `lib/core/network/connectivity_provider.dart` (Lignes `10 - 21`)
+- **Indicateur visuel hors-ligne** : `lib/core/widgets/offline_banner_widget.dart` (Lignes `12 - 36`) affiché en haut de l'écran lors d'une déconnexion.
+- **Pull-to-refresh pour resynchroniser** : `lib/core/screens/homepage.dart` (Lignes `139 - 145`).
 
 ---
 
 ## ⚠️ 5. Gestion d'erreurs réseau avec messages utilisateur
 
-Toutes les exceptions `DioException` sont capturées et converties en exceptions métiers claires présentées à l'utilisateur.
+Toutes les erreurs réseau Dio sont interceptées et mappées vers des exceptions compréhensibles pour l'utilisateur.
 
-### Fichiers & Lignes :
-- **Définition des Exceptions** : `lib/core/network/error/exception.dart` (Lignes `2-54`)
+- **Exceptions typées** : `lib/core/network/error/exception.dart` (Lignes `2 - 54`)
 ```dart
 sealed class AppException implements Exception {
   final String message;
@@ -266,49 +263,37 @@ class TimeoutException extends AppException {
   const TimeoutException() : super('La connexion a expiré, réessaie');
 }
 ```
-
-- **Mapper d'erreur Dio** : `lib/core/network/error/dio_error_mapper.dart` (Lignes `5-49`)
-```dart
-AppException mapDioException(DioException e) {
-  switch (e.type) {
-    case DioExceptionType.connectionTimeout:
-    case DioExceptionType.receiveTimeout:
-      return const TimeoutException();
-    case DioExceptionType.connectionError:
-      return const NetworkException();
-    case DioExceptionType.badResponse:
-      if (status == 401) return const UnauthorizedException('Accès non autorisé');
-      return const ServerException();
-    default:
-      return const UnknownException();
-  }
-}
-```
+- **Mapper Dio** : `lib/core/network/error/dio_error_mapper.dart` (Lignes `5 - 49`)
+- **Affichage dans l'UI** : `.when(error: (e, _) => Center(child: Text(...)))` sur chaque écran.
 
 ---
 
 ## 🏛️ 6. Architecture Clean / Feature-First
 
-Le code est rigoureusement séparé par fonctionnalité et par couche de responsabilité :
+Organisation stricte du projet en modules indépendants avec séparation par couches :
 
 ```
 lib/
-├── core/                                # Socle transverse
-│   ├── database/                        # Drift ORM (SQLite) & Providers
-│   ├── network/                         # Dio Client, Intercepteurs & Exceptions
-│   └── widgets/                         # OfflineBannerWidget, etc.
-└── features/                            # Feature-First Modules
-    ├── auth/                            # Data (Remote) / Domain (Repo) / Presentation (Screens)
-    ├── film/                            # Data (Remote + Drift) / Domain / Presentation (Riverpod)
-    ├── person/                          # Data (Remote + Drift) / Domain / Presentation (Riverpod)
-    └── credits/                         # Data (Remote + Drift) / Domain / Presentation (Riverpod)
+├── core/                                # Socle applicatif transverse
+│   ├── database/                        # BDD Drift (SQLite), tables et code généré
+│   ├── network/                         # Client Dio, Intercepteurs JWT & Exceptions
+│   └── widgets/                         # OfflineBannerWidget, widgets partagés
+│
+├── features/                            # Modules métiers (Feature-First)
+│   ├── auth/                            # Data (Remote) / Domain (Repo) / Presentation (Screens)
+│   ├── film/                            # Data (Remote + Drift) / Domain / Presentation (Riverpod)
+│   ├── person/                          # Data (Remote + Drift) / Domain / Presentation (Riverpod)
+│   └── credits/                         # Data (Remote + Drift) / Domain / Presentation (Riverpod)
+│
+└── routing/
+    └── routes.dart                      # Navigation GoRouter avec redirection Auth
 ```
 
 ---
 
 ## 📦 7. Repository Pattern pour l'accès aux données
 
-Séparation stricte des contrats abstraits dans le `domain` et des implémentations concrètes dans la couche `data` :
+Séparation stricte entre les contrats abstraits (`domain`) et les implémentations concrètes (`data`) :
 
 - **Contrat Domain** : `lib/features/film/domain/repositories/film_repository.dart`
 ```dart
@@ -317,18 +302,15 @@ abstract class FilmRepository {
   Future<Film?> getFilmById(int id);
 }
 ```
-- **Implémentation Data** : `lib/features/film/data/repositories/film_repository_impl.dart` (injecte `RemoteFilmDataSource` et `LocalFilmDataSource`).
+- **Implémentation Data** : `lib/features/film/data/repositories/film_repository_impl.dart` (coordonne `RemoteFilmDataSource` et `LocalFilmDataSource`).
 - Idem pour `PersonRepository` (`features/person/`) et `CreditsRepository` (`features/credits/`).
 
 ---
 
 ## 🌐 8. Dio pour les appels réseau
 
-Le client réseau est instancié avec des configurations strictes de timeout et de headers.
-
-### Fichier & Lignes :
 - **Fichier** : `lib/core/network/dio_client.dart`
-- **Lignes** : `28 - 40`
+- **Lignes de code** : `28 - 40`
 ```dart
 final dio = Dio(
   BaseOptions(
@@ -348,11 +330,8 @@ final dio = Dio(
 
 ## 🔑 9. Intercepteur pour l'injection du token d'auth
 
-Toute requête sortante est interceptée pour y injecter le token JWT extrait du stockage chiffré.
-
-### Fichier & Lignes :
 - **Fichier** : `lib/core/network/dio_client.dart`
-- **Lignes** : `41 - 49`
+- **Lignes de code** : `41 - 49`
 ```dart
 dio.interceptors.add(
   InterceptorsWrapper(
@@ -370,11 +349,8 @@ dio.interceptors.add(
 
 ## 🔄 10. Gestion du refresh token
 
-En cas d'erreur HTTP 401 (`Unauthorized`), l'intercepteur tente automatiquement de renouveler le token via le refresh token et rejoue la requête initiale.
-
-### Fichier & Lignes :
 - **Fichier** : `lib/core/network/dio_client.dart`
-- **Lignes** : `50 - 98`
+- **Lignes de code** : `50 - 98`
 ```dart
 onError: (error, handler) async {
   final isUnauthorized = error.response?.statusCode == 401;
@@ -407,50 +383,64 @@ onError: (error, handler) async {
 
 ## 🧪 11. Au moins 3 tests unitaires sur la couche repository
 
-La suite de tests unitaires valide exhaustivement la couche repository (**23 tests passés avec 100% de succès**).
+La suite de tests unitaires respecte **rigoureusement la même arborescence que `lib/`** (structure miroir Feature-First) et valide la couche Repository avec **27 tests passés avec 100% de succès** :
 
-### Fichiers & Lignes :
-- **Tests FilmRepository** : `test/repository/film_repository_test.dart` (Lignes `89 - 175`)
-  - Test 1 : Succès réseau -> écriture dans la BDD SQLite locale.
-  - Test 2 : Échec réseau -> fallback automatique sur le cache SQLite Drift.
-  - Test 3 : Échec réseau sans cache -> propagation de l'erreur réseau.
-  - Test 4 : `getFilmById` en ligne -> mise en cache local.
-  - Test 5 : `getFilmById` hors-ligne -> restitution depuis SQLite.
-- **Tests PersonRepository** : `test/repository/person_repository_test.dart` (Lignes `79 - 157`)
-  - Test 6 : Succès réseau et sauvegarde locale.
-  - Test 7 : Mode hors-ligne et restitution depuis le cache.
-  - Test 8 : Traduction DioException vers `NetworkException`.
-  - Test 9 & 10 : `getPersonById` distant et hors-ligne.
-- **Tests CreditsRepository** : `test/repository/credits_repository_test.dart` (Lignes `58 - 108`)
-  - Test 11 : Enregistrement et restitution casting/filmographie avec Drift.
+- **`test/features/film/data/repositories/film_repository_impl_test.dart`** :
+  - ✅ Succès réseau : chargement et écriture dans la base SQLite locale Drift.
+  - ✅ Mode hors-ligne : renvoi des films du cache SQLite lors d'une coupure réseau.
+  - ✅ Échec réseau sans cache local : propagation de l'erreur réseau.
+  - ✅ `getFilmById` distant et mise en cache SQLite.
+  - ✅ `getFilmById` hors-ligne depuis SQLite.
+- **`test/features/person/data/repositories/person_repository_impl_test.dart`** :
+  - ✅ Récupération et persistance locale des personnalités dans Drift.
+  - ✅ Fallback automatique sur le cache hors-ligne SQLite.
+  - ✅ Traduction des erreurs réseau en `NetworkException`.
+  - ✅ `getPersonById` distant et hors-ligne.
+- **`test/features/credits/data/repositories/credits_repository_impl_test.dart`** :
+  - ✅ Synchronisation des crédits (casting et filmographie) vers SQLite Drift.
+  - ✅ Restitution du casting en mode hors-ligne.
+  - ✅ Gestion des erreurs sans cache.
+- **`test/features/auth/data/repositories/auth_repository_impl_test.dart`** :
+  - ✅ Login : délégation distante et persistance des jetons dans SecureStorage.
+  - ✅ Register : création de compte et sauvegarde des jetons.
+  - ✅ Logout : nettoyage impératif des tokens même en cas d'erreur serveur.
+  - ✅ `restoreSession` : restauration de session active si jeton présent.
+- **`test/core/network/error/dio_error_mapper_test.dart`** :
+  - ✅ Traduction des erreurs réseau Dio en exceptions métiers (`NetworkException`, `TimeoutException`, `UnauthorizedException`, etc.).
 
-### Commande d'exécution :
+### Exécuter les tests :
 ```bash
-flutter test test/repository/
+flutter test test/features/ test/core/
 ```
 **Résultat :**
 ```text
-00:01 +23: All tests passed!
+00:15 +27: All tests passed!
 ```
 
 ---
 
-## 🚀 12. Instructions de lancement et de reproduction
+## 🚀 12. Instructions d'installation et de lancement
 
 ```bash
 # 1. Cloner le projet
 git clone https://github.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation.git
 cd multi_screen_app_with_navigation
 
-# 2. Installer les packages
+# 2. Installer les dépendances
 flutter pub get
 
-# 3. Lancer la génération de code Drift
+# 3. Lancer la génération de code Drift (SQLite)
 dart run build_runner build --delete-conflicting-outputs --force-jit
 
-# 4. Lancer les tests unitaires
-flutter test test/repository/
+# 4. Lancer les tests unitaires du repository
+flutter test test/features/ test/core/
 
 # 5. Démarrer l'application
 flutter run
 ```
+
+---
+
+## 👤 Auteur
+
+Projet réalisé par **Don-SKRED** dans le cadre de la certification Full-Stack Flutter.
