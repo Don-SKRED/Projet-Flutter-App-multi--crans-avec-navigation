@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:multi_screen_app_with_navigation/features/film/application/services/film_service.dart';
 import 'package:multi_screen_app_with_navigation/features/film/data/model/film_model.dart';
 import 'package:multi_screen_app_with_navigation/features/film/presentation/providers/film_provider.dart';
-
 import 'package:multi_screen_app_with_navigation/features/film/presentation/widget/card_film_widget.dart';
 import 'package:multi_screen_app_with_navigation/features/film/presentation/widget/search_card_film.dart';
-import 'package:multi_screen_app_with_navigation/features/person/application/service/person_service.dart';
 import 'package:multi_screen_app_with_navigation/features/person/domain/person_model.dart';
 import 'package:multi_screen_app_with_navigation/features/person/presentation/providers/person_provider.dart';
 import 'package:multi_screen_app_with_navigation/features/person/presentation/widgets/card_person_widget.dart';
@@ -26,44 +23,9 @@ class Homepage extends ConsumerStatefulWidget {
 }
 
 class _HomepageState extends ConsumerState<Homepage> {
-  final filmService = FilmService();
-  final personService = PersonService();
   final String titleAppBar = "Film page";
   final String titre1 = "Film";
   final String titre2 = "Personnalité";
-
-  late Future<List<Film>> _filmsFuture;
-  late Future<List<Person>> _personsFuture;
-  List<Film> listFilm = [];
-  List<Person> listPerson = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _filmsFuture = filmService.readFile();
-    _personsFuture = personService.readFile();
-    _loadData();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  Future<void> _loadData() async {
-    final value = await filmService.readFile();
-    final valuePerson = await personService.readFile();
-    setState(() {
-      listFilm = value;
-      listPerson = valuePerson;
-    });
-  }
-
-  void _rafraichirFilms() {
-    setState(() {
-      _filmsFuture = filmService.readFile(); // on recrée le Future à la demande
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +36,7 @@ class _HomepageState extends ConsumerState<Homepage> {
         child: Icon(Icons.add),
         onPressed: () async {
           await context.push("film/new");
-          _rafraichirFilms();
+          ref.invalidate(filmsProvider);
         },
       ),
       appBar: AppBar(
@@ -99,8 +61,9 @@ class _HomepageState extends ConsumerState<Homepage> {
               showSearch(
                 context: context,
                 delegate: MySearchDelegate(
-                  listFilm: listFilm,
-                  listPerson: listPerson,
+                  // On lit directement les données déjà chargées dans les providers
+                  listFilm: allFilms.asData?.value ?? [],
+                  listPerson: allPersons.asData?.value ?? [],
                 ),
               );
             },
@@ -148,86 +111,81 @@ class _HomepageState extends ConsumerState<Homepage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const OfflineBannerWidget(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                titre1,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  titre1,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            Container(
-              decoration: const BoxDecoration(color: Colors.deepPurple),
-              height: context.filmsListHeight,
-              child: allFilms.when(
-                data: (data) {
-                  print("data: $data");
-                  return ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () => context.push(
-                          "film/${data[index].id}",
-                          // extra: filmService,
-                        ),
-                        child: CardFilmWidget(film: data[index]),
-                      );
-                    },
-                    separatorBuilder: (context, index) =>
-                        SizedBox(width: context.spacing),
-                    itemCount: data.length,
-                  );
-                },
-                error: (error, _) {
-                  return Center(child: Text("Error : $error"));
-                },
-                loading: () {
-                  return Center(child: CircularProgressIndicator());
-                },
+              Container(
+                decoration: const BoxDecoration(color: Colors.deepPurple),
+                height: context.filmsListHeight,
+                child: allFilms.when(
+                  data: (data) {
+                    return ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () => context.push(
+                            "film/${data[index].id}",
+                            // extra: filmService,
+                          ),
+                          child: CardFilmWidget(film: data[index]),
+                        );
+                      },
+                      separatorBuilder: (context, index) =>
+                          SizedBox(width: context.spacing),
+                      itemCount: data.length,
+                    );
+                  },
+                  error: (error, _) {
+                    return Center(child: Text("Error : $error"));
+                  },
+                  loading: () {
+                    return Center(child: CircularProgressIndicator());
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                titre2,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  titre2,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
 
-            SizedBox(
-              height: context.personListHeight,
-              child: allPersons.when(
-                data: (data) {
-                  print("data: $data");
-                  return ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () => context.push(
-                          "person/${data[index].id}",
-                          extra: personService,
-                        ),
-                        child: CardPersonWidget(person: data[index]),
-                      );
-                    },
-                    separatorBuilder: (context, index) =>
-                        SizedBox(width: context.spacing),
-                    itemCount: data.length,
-                  );
-                },
-                error: (error, _) {
-                  return Center(child: Text("Error : $error"));
-                },
-                loading: () {
-                  return Center(child: CircularProgressIndicator());
-                },
+              SizedBox(
+                height: context.personListHeight,
+                child: allPersons.when(
+                  data: (data) {
+                    return ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () => context.push("person/${data[index].id}"),
+                          child: CardPersonWidget(person: data[index]),
+                        );
+                      },
+                      separatorBuilder: (context, index) =>
+                          SizedBox(width: context.spacing),
+                      itemCount: data.length,
+                    );
+                  },
+                  error: (error, _) {
+                    return Center(child: Text("Error : $error"));
+                  },
+                  loading: () {
+                    return Center(child: CircularProgressIndicator());
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 }
 
 class MySearchDelegate extends SearchDelegate {
