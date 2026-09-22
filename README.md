@@ -32,7 +32,7 @@ Chaque exigence du projet est détaillée ci-dessous avec : **le fichier source 
 
 | Exigence du Sujet | Fichier(s) Source | Lignes de Code | Statut |
 | :--- | :--- | :---: | :---: |
-| **1. Authentification (login/register/logout) — JWT** | `lib/features/auth/data/repositories/auth_repository_impl.dart`<br>`lib/core/screens/homepage.dart` | `13 - 50`<br>`110 - 136` | ✅ Validé |
+| **1. Authentification (login/register/logout) — JWT** | `lib/features/auth/data/repositories/auth_repository_impl.dart`<br>`lib/features/auth/presentation/screens/login_screen.dart`<br>`lib/features/auth/presentation/screens/signup_screen.dart`<br>`lib/core/screens/homepage.dart` | `13 - 50`<br>écran complet<br>écran complet<br>`110 - 136` | ✅ Validé |
 | **2. Au moins 3 écrans de données issues d'une API REST** | `lib/core/screens/homepage.dart`<br>`lib/features/film/presentation/screens/specific_film_page.dart`<br>`lib/features/person/presentation/screens/specific_person.dart` | `79 - 224`<br>`16 - 208`<br>`22 - 283` | ✅ Validé |
 | **3. Mise en cache locale des données (SQLite)** | `lib/core/database/tables/films_table.dart`<br>`lib/core/database/app_database.dart`<br>`lib/features/film/data/data_sources/local_film_data_source.dart` | `3 - 14`<br>`13 - 29`<br>`18 - 68` | ✅ Validé |
 | **4. Mode hors-ligne : afficher le cache si pas de réseau** | `lib/features/film/data/repositories/film_repository_impl.dart`<br>`lib/core/network/connectivity_provider.dart`<br>`lib/core/widgets/offline_banner_widget.dart` | `16 - 29`<br>`10 - 21`<br>`12 - 36` | ✅ Validé |
@@ -87,14 +87,16 @@ Future<void> logout() async {
 }
 ```
 
+- **Écran de connexion (UI)** : `lib/features/auth/presentation/screens/login_screen.dart` (179 lignes) — formulaire email/mot de passe validé (`Form` + `GlobalKey<FormState>`), bouton de connexion appelant `authProvider.notifier.login(...)`, lien vers l'inscription.
+- **Écran d'inscription (UI)** : `lib/features/auth/presentation/screens/signup_screen.dart` (229 lignes) — formulaire email/mot de passe/pseudo, appel à `authProvider.notifier.signUp(...)` (ligne `58`).
 - **Déconnexion sécurisée** : `lib/core/screens/homepage.dart` (Lignes `110-136`) : boîte de dialogue de confirmation appelant `authProvider.notifier.signOut()`.
-- **Protection des routes** : `lib/routing/routes.dart` (Lignes `27-38`) : redirection automatique vers `/login` si aucun jeton valide n'est présent.
+- **Protection des routes** : `lib/routing/routes.dart` (Lignes `27-38`) : redirection automatique vers `/login`/`/signup` si aucun jeton valide n'est présent, et inversement vers `/` si déjà connecté.
 
 ---
 
 ## 📱 2. Au moins 3 écrans de données issues d'une API REST
 
-Les données sont consommées depuis l'API REST réelle de Supabase via des `FutureProvider` Riverpod avec gestion d'état réactive (`.when()`) :
+Les données sont consommées depuis l'API REST réelle de Supabase via des `FutureProvider` Riverpod avec gestion d'état réactive (`.when()`). Le projet expose **3 écrans distincts**, chacun alimenté par un ou plusieurs endpoints REST, et couvre **3 entités de données** différentes (films, personnes, crédits — cette dernière n'ayant pas d'écran dédié mais étant affichée dans les écrans 2 et 3 ci-dessous) :
 
 ### Écran 1 : Page d'accueil (Films & Personnalités en direct)
 - **Fichier** : `lib/core/screens/homepage.dart`
@@ -422,22 +424,50 @@ flutter test test/features/ test/core/
 ## 🚀 12. Instructions d'installation et de lancement
 
 ```bash
-# 1. Cloner le projet
+# 1. Cloner le projet et se placer sur la branche de développement
 git clone https://github.com/Don-SKRED/Projet-Flutter-App-multi--crans-avec-navigation.git
-cd multi_screen_app_with_navigation
+cd Projet-Flutter-App-multi--crans-avec-navigation
+git checkout feature/film
 
 # 2. Installer les dépendances
 flutter pub get
 
-# 3. Lancer la génération de code Drift (SQLite)
+# 3. Configurer les variables d'environnement (backend Supabase)
+cp .env.exemple .env
+# Puis éditer .env et renseigner tes propres identifiants Supabase :
+#   SUPABASE_URL=https://<ton-projet>.supabase.co
+#   SUPABASE_ANON_KEY=<ta clé anon publique>
+# (Dashboard Supabase → Project Settings → API)
+
+# 4. Lancer la génération de code Drift (SQLite)
 dart run build_runner build --delete-conflicting-outputs --force-jit
 
-# 4. Lancer les tests unitaires du repository
+# 5. Lancer les tests unitaires du repository
 flutter test test/features/ test/core/
 
-# 5. Démarrer l'application
+# 6. Démarrer l'application
 flutter run
 ```
+
+### ⚙️ Configuration du backend Supabase
+
+L'application s'appuie sur les tables Supabase suivantes (schéma REST + Auth) :
+
+| Table | Description |
+| :--- | :--- |
+| `films` | Catalogue des films (titre, synopsis, genre, année, poster) |
+| `persons` | Acteurs / réalisateurs (nom, date de naissance, genre, photo) |
+| `credits` | Table de liaison film ↔ personne (rôle dans le casting) |
+
+L'authentification (login/register/logout, JWT, refresh token) utilise directement **Supabase Auth**, aucune table custom n'est nécessaire pour les utilisateurs.
+
+---
+
+## 🗺️ Axes d'amélioration connus
+
+- **Tests widgets sur les écrans d'authentification** : `LoginScreen` et `SignupScreen` ne sont couverts que manuellement pour le moment ; les 27 tests automatisés portent sur les couches repository, le mapper d'erreurs et quelques widgets partagés (`CardFilmWidget`, `SearchResultSection`), mais pas encore sur les formulaires d'auth eux-mêmes.
+- **Extraction du refresh token** : la logique de refresh dans `DioClient.onError` pourrait être isolée dans une classe dédiée (ex. `AuthInterceptor`) pour améliorer la lisibilité.
+- **Pipeline CI/CD** : non requis par le sujet, mais l'ajout d'un workflow GitHub Actions (`flutter analyze` + `flutter test`) sécuriserait les prochaines évolutions.
 
 ---
 
