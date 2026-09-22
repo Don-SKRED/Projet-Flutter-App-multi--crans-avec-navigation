@@ -6,6 +6,7 @@ import 'package:multi_screen_app_with_navigation/features/film/data/model/film_m
 abstract class RemoteFilmDataSource {
   Future<List<Film>> getAllFilm();
   Future<Film?> getFilmById(int id);
+  Future<void> addFilm(Film film);
 }
 
 // abstract class LocalFilmDataSource {
@@ -42,6 +43,18 @@ class RemoteFilmDataSourceImpl implements RemoteFilmDataSource {
       final list = response.data as List;
       if (list.isEmpty) return null;
       return Film.fromJson(list.first as Map<String, dynamic>);
+    } on DioException catch (e) {
+      throw mapDioException(e);
+    }
+  }
+
+  @override
+  Future<void> addFilm(Film film) async {
+    try {
+      await dio.post(
+        '/rest/v1/films',
+        data: film.toJson(),
+      );
     } on DioException catch (e) {
       throw mapDioException(e);
     }

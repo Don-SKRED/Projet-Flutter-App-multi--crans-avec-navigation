@@ -6,17 +6,14 @@ import 'package:multi_screen_app_with_navigation/core/utils/responsive.dart';
 import 'package:multi_screen_app_with_navigation/features/credits/presentation/providers/credit_provider.dart';
 import 'package:multi_screen_app_with_navigation/features/film/presentation/providers/film_provider.dart';
 import 'package:multi_screen_app_with_navigation/features/film/presentation/widget/card_film_widget.dart';
-import 'package:multi_screen_app_with_navigation/features/person/application/service/person_service.dart';
 import 'package:multi_screen_app_with_navigation/features/person/presentation/providers/person_provider.dart';
 import 'package:multi_screen_app_with_navigation/core/widgets/offline_banner_widget.dart';
 
 class SpecificPerson extends ConsumerWidget {
   final int personId;
-  final PersonService? personService;
   const SpecificPerson({
     super.key,
     required this.personId,
-    this.personService,
   });
 
   @override

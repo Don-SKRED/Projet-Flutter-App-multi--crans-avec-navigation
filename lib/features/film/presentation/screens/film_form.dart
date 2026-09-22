@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_screen_app_with_navigation/core/utils/responsive.dart';
-import 'package:multi_screen_app_with_navigation/features/film/application/services/film_service.dart';
 import 'package:multi_screen_app_with_navigation/features/film/data/model/film_model.dart';
+import 'package:multi_screen_app_with_navigation/features/film/presentation/providers/film_provider.dart';
 
-class FilmForm extends StatefulWidget {
+class FilmForm extends ConsumerStatefulWidget {
   const FilmForm({super.key});
 
   @override
-  State<FilmForm> createState() => _FilmFormState();
+  ConsumerState<FilmForm> createState() => _FilmFormState();
 }
 
-class _FilmFormState extends State<FilmForm> {
+class _FilmFormState extends ConsumerState<FilmForm> {
   String titleAppBar = "Ajouter un film";
   static const _genresDisponibles = [
     'Drame',
@@ -22,12 +23,12 @@ class _FilmFormState extends State<FilmForm> {
     'Romance',
   ];
   var formKey = GlobalKey<FormState>();
-  FilmService filmService = FilmService();
   String? titleValue;
   String? synopsisValue;
   String? releaseValue;
   String? genreValue;
   String? posterValue;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +92,7 @@ class _FilmFormState extends State<FilmForm> {
                     label: Text("Année de sortie"),
                     border: OutlineInputBorder(borderSide: BorderSide()),
                   ),
+                  keyboardType: TextInputType.number,
                   validator: (value) {
                     final annee = int.tryParse(value ?? '');
                     if (annee == null) return 'Entrez une année valide';
@@ -119,25 +121,47 @@ class _FilmFormState extends State<FilmForm> {
                   width: context.screenWidth,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        formKey.currentState!.save();
-                        int newId = await filmService.generateNewId();
-                        Film film = Film(
-                          newId,
-                          title: titleValue!,
-                          release: int.parse(
-                            releaseValue!,
-                          ), // Assurez-vous d'avoir releaseValue
-                          synopsis: synopsisValue!,
-                          genre: genreValue!,
-                          poster: posterValue ?? "default_poster.jpg",
-                        );
-                        await filmService.add(film);
-                        if (context.mounted) context.pop();
-                      }
-                    },
-                    child: Text("Ajouter"),
+                    onPressed: _isLoading
+                        ? null
+                        : () async {
+                            if (formKey.currentState!.validate()) {
+                              formKey.currentState!.save();
+                              setState(() => _isLoading = true);
+                              try {
+                                final newId = await ref.read(
+                                  nextFilmIdProvider.future,
+                                );
+                                final film = Film(
+                                  newId,
+                                  title: titleValue!,
+                                  release: int.parse(releaseValue!),
+                                  synopsis: synopsisValue!,
+                                  genre: genreValue ?? _genresDisponibles[0],
+                                  poster: posterValue ?? "default_poster.jpg",
+                                );
+                                await ref.read(addFilmProvider)(film);
+                                if (context.mounted) context.pop();
+                              } catch (e) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Erreur : $e'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                              } finally {
+                                if (mounted) setState(() => _isLoading = false);
+                              }
+                            }
+                          },
+                    child: _isLoading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Text("Ajouter"),
                   ),
                 ),
               ],

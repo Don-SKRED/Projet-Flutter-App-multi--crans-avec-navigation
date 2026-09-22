@@ -7,11 +7,9 @@ import 'package:multi_screen_app_with_navigation/core/screens/result_search_pers
 import 'package:multi_screen_app_with_navigation/features/auth/presentation/provider/auth_provider.dart';
 import 'package:multi_screen_app_with_navigation/features/auth/presentation/screens/login_screen.dart';
 import 'package:multi_screen_app_with_navigation/features/auth/presentation/screens/signup_screen.dart';
-import 'package:multi_screen_app_with_navigation/features/film/application/services/film_service.dart';
 import 'package:multi_screen_app_with_navigation/features/film/data/model/film_model.dart';
 import 'package:multi_screen_app_with_navigation/features/film/presentation/screens/film_form.dart';
 import 'package:multi_screen_app_with_navigation/features/film/presentation/screens/specific_film_page.dart';
-import 'package:multi_screen_app_with_navigation/features/person/application/service/person_service.dart';
 import 'package:multi_screen_app_with_navigation/features/person/domain/person_model.dart';
 import 'package:multi_screen_app_with_navigation/features/person/presentation/screens/specific_person.dart';
 // ... tes autres imports de screens inchangés
@@ -72,12 +70,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: "/person/:id",
         builder: (context, state) {
           final id = state.pathParameters['id']!;
-          final personService =
-              (state.extra as PersonService?) ?? PersonService();
-          return SpecificPerson(
-            personId: int.parse(id),
-            personService: personService,
-          );
+          return SpecificPerson(personId: int.parse(id));
         },
       ),
       GoRoute(

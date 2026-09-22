@@ -44,4 +44,23 @@ class FilmRepositoryImpl implements FilmRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<void> addFilm(Film film) async {
+    // Sauvegarde en local Drift (fonctionne hors-ligne)
+    await localFilmDataSource.saveFilm(film);
+    // Tente aussi d'envoyer au remote si connecté
+    try {
+      await remoteFilmDataSource.addFilm(film);
+    } catch (_) {
+      // Ignore les erreurs réseau : le film est déjà en local
+    }
+  }
+
+  @override
+  Future<int> getNextId() async {
+    final films = await localFilmDataSource.getAllFilms();
+    if (films.isEmpty) return 1;
+    return films.map((f) => f.id).reduce((a, b) => a > b ? a : b) + 1;
+  }
 }

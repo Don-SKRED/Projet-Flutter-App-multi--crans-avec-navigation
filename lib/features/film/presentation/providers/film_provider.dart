@@ -34,3 +34,16 @@ final filmsProvider = FutureProvider<List<Film>>((ref) {
 final filmByIdProvider = FutureProvider.family<Film?, int>((ref, id) {
   return ref.watch(filmRepositoryProvider).getFilmById(id);
 });
+
+/// Ajoute un film via le repository (remote + local Drift)
+final addFilmProvider = Provider<Future<void> Function(Film)>((ref) {
+  return (film) async {
+    await ref.read(filmRepositoryProvider).addFilm(film);
+    ref.invalidate(filmsProvider);
+  };
+});
+
+/// Prochain ID disponible (calculé depuis la base locale)
+final nextFilmIdProvider = FutureProvider<int>((ref) {
+  return ref.read(filmRepositoryProvider).getNextId();
+});
